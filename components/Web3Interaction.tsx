@@ -59,7 +59,7 @@ export default function Web3Interaction() {
             </SectionHeading>
 
             <div className="max-w-4xl mx-auto">
-                <GlassCard className="relative overflow-hidden bg-linear-to-br from-emerald-500/5 to-purple-500/5 border-emerald-500/20">
+                <GlassCard className="relative bg-linear-to-br from-emerald-500/5 to-purple-500/5 border-emerald-500/20">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                         <div>
                             <div className="flex items-center gap-3 mb-6">

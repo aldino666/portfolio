@@ -3,7 +3,11 @@
 import React, { useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
+import {
+    PhantomWalletAdapter,
+    SolflareWalletAdapter,
+    UnsafeBurnerWalletAdapter
+} from '@solana/wallet-adapter-wallets';
 import {
     WalletModalProvider,
 } from '@solana/wallet-adapter-react-ui';
@@ -19,16 +23,8 @@ export const SolanaProvider = ({ children }: { children: React.ReactNode }) => {
 
     const wallets = useMemo(
         () => [
-            /**
-             * Wallets that implement either of these standards will be available automatically.
-             *
-             *   - Solana Mobile Stack Mobile Wallet Adapter Protocol (https://github.com/solana-mobile/mobile-wallet-adapter)
-             *   - Wallet Standard (https://github.com/wallet-standard/wallet-standard)
-             *
-             * If you wish to support a wallet that supports neither of those standards,
-             * instantiate its legacy web extension adapter here. Common legacy adapters can be found
-             * in the npm package `@solana/wallet-adapter-wallets`.
-             */
+            new PhantomWalletAdapter(),
+            new SolflareWalletAdapter(),
             new UnsafeBurnerWalletAdapter(),
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
