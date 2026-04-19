@@ -71,11 +71,11 @@ export default function Web3Interaction() {
 
                             <h3 className="text-2xl font-bold mb-4 flex items-center gap-2">
                                 <Wallet className="text-emerald-400" />
-                                Solana Support
+                                {t('web3_support_title')}
                             </h3>
 
                             <p className="text-gray-400 mb-8">
-                                Connect your Solana wallet to send a small donation. This feature demonstrates secure transaction signing and real-time blockchain interaction.
+                                {t('web3_support_desc')}
                             </p>
 
                             <WalletMultiButton className="!bg-emerald-500 !rounded-full !font-bold hover:!bg-emerald-600 transition-all" />
@@ -145,7 +145,7 @@ export default function Web3Interaction() {
                                                         rel="noopener noreferrer"
                                                         className="underline opacity-70 hover:opacity-100"
                                                     >
-                                                        View on Explorer
+                                                        {t('web3_view_explorer')}
                                                     </a>
                                                 )}
                                             </div>
@@ -154,7 +154,7 @@ export default function Web3Interaction() {
                                 </motion.div>
                             ) : (
                                 <div className="h-48 flex items-center justify-center border-2 border-dashed border-white/5 rounded-2xl">
-                                    <p className="text-gray-500 text-sm">Please connect your wallet to interact</p>
+                                    <p className="text-gray-500 text-sm">{t('web3_connect_prompt')}</p>
                                 </div>
                             )}
                         </AnimatePresence>

@@ -9,13 +9,19 @@ export default function Journey() {
 
   const milestones = [
     {
-      year: "2024 - Present",
+      year: "2025 - 2026",
+      title: t('journey_sap_work_title'),
+      desc: t('journey_sap_work_desc'),
+      type: "work"
+    },
+    {
+      year: "2024",
       title: t('journey_sap_exp_title'),
       desc: t('journey_sap_exp_desc'),
       type: "focus"
     },
     {
-      year: "2023 - Present",
+      year: "2023",
       title: t('journey_web3_title'),
       desc: t('journey_web3_desc'),
       type: "focus"
@@ -30,7 +36,7 @@ export default function Journey() {
       year: "2021",
       title: t('journey_health_title'),
       desc: t('journey_health_desc'),
-      type: "work"
+      type: "internship"
     },
     {
       year: "2019 - 2024",

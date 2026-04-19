@@ -35,9 +35,9 @@ export default function Hero() {
           </motion.div>
 
           <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-            <span className="gradient-text">{t('hero_title').split('|')[0]}</span>
+            <span className="gradient-text">Aldino</span>
             <br />
-            <span className="text-white">Web3 & SAP Specialist</span>
+            <span className="text-white text-3xl md:text-5xl">{t('hero_title')}</span>
           </h1>
 
           <p className="text-gray-400 text-lg md:text-xl mb-10 max-w-xl leading-relaxed">

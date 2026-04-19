@@ -14,24 +14,24 @@ export default function Projects() {
       desc: t('proj_dapp_desc'),
       tech: ["Next.js", "Solana/Web3.js", "Framer Motion", "Tailwind"],
       icon: <Wallet className="text-emerald-400" />,
-      link: "#",
-      github: "#"
+      link: "https://github.com/aldino666/ox-amm-pool",
+      github: "https://github.com/aldino666/ox-amm-pool"
     },
     {
       title: t('proj_smart_title'),
       desc: t('proj_smart_desc'),
       tech: ["Rust", "Anchor", "Solana CLI"],
       icon: <ExternalLink className="text-blue-400" />,
-      link: "#",
-      github: "#"
+      link: "https://github.com/aldino666/oxalix-smart-contract",
+      github: "https://github.com/aldino666/oxalix-smart-contract"
     },
     {
       title: t('proj_data_title'),
       desc: t('proj_data_desc'),
-      tech: ["React", "Node.js", "PostgreSQL", "Chart.js"],
+      tech: ["Rust", "Solana/Web3.js", "CLI"],
       icon: <LineChart className="text-purple-400" />,
-      link: "#",
-      github: "#"
+      link: "https://github.com/aldino666/Wallet-Tracking-Solana",
+      github: "https://github.com/aldino666/Wallet-Tracking-Solana"
     },
     {
       title: t('proj_sap_title'),
