@@ -2,6 +2,7 @@
 
 import { useLanguage } from "@/context/LanguageContext";
 import Image from "next/image";
+import { Github, Linkedin } from "lucide-react";
 
 export default function Footer() {
   const { t } = useLanguage();
@@ -11,17 +12,20 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="flex items-center gap-2">
           <Image src="/logo.png" alt="Logo" width={30} height={30} className="rounded-sm" />
-          <span className="font-bold text-lg">Portfolio</span>
+          <span className="font-bold text-lg tracking-widest text-emerald-400">R-A-L</span>
         </div>
 
         <p className="text-gray-500 text-sm">
           © {new Date().getFullYear()} — {t('footer_rights')}
         </p>
 
-        <div className="flex gap-6 text-gray-500 text-sm">
-          <a href="#projects" className="hover:text-emerald-400 transition-colors">Projects</a>
-          <a href="#about" className="hover:text-emerald-400 transition-colors">About</a>
-          <a href="#contact" className="hover:text-emerald-400 transition-colors">Contact</a>
+        <div className="flex gap-6 text-gray-500">
+          <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">
+            <Github size={20} />
+          </a>
+          <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="hover:text-emerald-400 transition-colors">
+            <Linkedin size={20} />
+          </a>
         </div>
       </div>
     </footer>

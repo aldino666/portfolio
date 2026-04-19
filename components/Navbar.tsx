@@ -17,7 +17,7 @@ export default function Navbar() {
     >
       <div className="flex items-center gap-2">
         <Image src="/logo.png" alt="Logo" width={40} height={40} className="rounded-sm" />
-        <span className="font-bold text-xl hidden sm:block">Portfolio</span>
+        <span className="font-bold text-xl hidden sm:block tracking-widest text-emerald-400">R-A-L</span>
       </div>
 
       <div className="flex items-center gap-8">

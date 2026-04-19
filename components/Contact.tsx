@@ -52,22 +52,22 @@ export default function Contact() {
           <div className="space-y-8">
             <h3 className="text-2xl font-bold">{t('contact_connect')}</h3>
             <div className="grid gap-6">
-              <a href="#" className="flex items-center gap-4 group">
+              <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
                 <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-emerald-500/10 text-gray-400 group-hover:text-emerald-400 transition-all">
                   <Github size={24} />
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">GitHub</p>
-                  <p className="font-bold">github.com/username</p>
+                  <p className="font-bold">aldino666</p>
                 </div>
               </a>
-              <a href="#" className="flex items-center gap-4 group">
+              <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
                 <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-blue-500/10 text-gray-400 group-hover:text-blue-400 transition-all">
                   <Linkedin size={24} />
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">LinkedIn</p>
-                  <p className="font-bold">linkedin.com/in/username</p>
+                  <p className="font-bold">ramanantsirahonana</p>
                 </div>
               </a>
               <div className="flex items-center gap-4 group">
@@ -76,7 +76,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-sm text-gray-400">Web3 Identity</p>
-                  <p className="font-mono text-sm break-all">0x71C765...d8976F</p>
+                  <p className="font-mono text-sm break-all">5qsHwA...ttoYq</p>
                 </div>
               </div>
             </div>

@@ -6,6 +6,7 @@ import About from "@/components/About";
 import Skills from "@/components/Skills";
 import Projects from "@/components/Projects";
 import Journey from "@/components/Journey";
+import Web3Interaction from "@/components/Web3Interaction";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import Background from "@/components/Background";
@@ -21,6 +22,7 @@ export default function Home() {
       <About />
       <Skills />
       <Projects />
+      <Web3Interaction />
       <Journey />
       <Contact />
       <Footer />

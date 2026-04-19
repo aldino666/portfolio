@@ -9,27 +9,33 @@ export default function Journey() {
 
   const milestones = [
     {
-      year: "Current",
-      title: t('journey_current_title'),
-      desc: t('journey_current_desc'),
+      year: "2024 - Present",
+      title: t('journey_sap_exp_title'),
+      desc: t('journey_sap_exp_desc'),
       type: "focus"
     },
     {
-      year: "2023 - 2024",
-      title: t('journey_intern_title'),
-      desc: t('journey_intern_desc'),
-      type: "work"
+      year: "2023 - Present",
+      title: t('journey_web3_title'),
+      desc: t('journey_web3_desc'),
+      type: "focus"
     },
     {
       year: "2022",
-      title: t('journey_sap_title'),
-      desc: t('journey_sap_desc'),
-      type: "education"
+      title: t('journey_nomerikia_title'),
+      desc: t('journey_nomerikia_desc'),
+      type: "work"
     },
     {
-      year: "Early Days",
-      title: t('journey_early_title'),
-      desc: t('journey_early_desc'),
+      year: "2021",
+      title: t('journey_health_title'),
+      desc: t('journey_health_desc'),
+      type: "work"
+    },
+    {
+      year: "2019 - 2024",
+      title: t('journey_edu_title'),
+      desc: t('journey_edu_desc'),
       type: "education"
     }
   ];

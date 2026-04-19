@@ -4,6 +4,7 @@ import { useLanguage } from "@/context/LanguageContext";
 import { motion } from "framer-motion";
 import { Button } from "./UI";
 import Image from "next/image";
+import { Github, Linkedin } from "lucide-react";
 
 export default function Hero() {
   const { t } = useLanguage();
@@ -50,6 +51,15 @@ export default function Hero() {
             <Button variant="outline" onClick={() => document.getElementById('contact')?.scrollIntoView()}>
               {t('hero_cta_contact')}
             </Button>
+          </div>
+
+          <div className="mt-8 flex gap-6">
+             <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-emerald-400 transition-colors">
+                <Github size={24} />
+             </a>
+             <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-emerald-400 transition-colors">
+                <Linkedin size={24} />
+             </a>
           </div>
         </motion.div>
 
