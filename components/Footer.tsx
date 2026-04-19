@@ -12,7 +12,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
         <div className="flex items-center gap-2">
           <Image src="/logo.png" alt="Logo" width={30} height={30} className="rounded-sm" />
-          <span className="font-bold text-lg tracking-widest text-emerald-400">R-A-L</span>
+          <span className="font-bold text-lg tracking-widest text-emerald-400">Aldino</span>
         </div>
 
         <p className="text-gray-500 text-sm">

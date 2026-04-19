@@ -28,3 +28,229 @@ Your application is presently configured to use the `UnsafeBurnerWalletAdapter`.
  GET / 200 in 125ms
 Your application is presently configured to use the `UnsafeBurnerWalletAdapter`. Find and remove it, then replace it with a list of adapters for wallets you would like your application to support. See https://github.com/anza-xyz/wallet-adapter#usage for an example.
  GET / 200 in 62ms
+ ✓ Compiled / in 22.6s (4856 modules)
+ ✓ Compiled in 1729ms (4856 modules)
+ ○ Compiling / ...
+ ⚠ ./node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/app/node_modules/pino/lib'
+
+Import trace for requested module:
+./node_modules/pino/lib/tools.js
+./node_modules/pino/pino.js
+./node_modules/@walletconnect/logger/dist/index.es.js
+./node_modules/@walletconnect/universal-provider/dist/index.es.js
+./node_modules/@walletconnect/solana-adapter/dist/core.js
+./node_modules/@walletconnect/solana-adapter/dist/adapter.js
+./node_modules/@solana/wallet-adapter-walletconnect/lib/esm/index.js
+./node_modules/@solana/wallet-adapter-wallets/lib/esm/index.js
+./components/SolanaProvider.tsx
+Your application is presently configured to use the `UnsafeBurnerWalletAdapter`. Find and remove it, then replace it with a list of adapters for wallets you would like your application to support. See https://github.com/anza-xyz/wallet-adapter#usage for an example.
+ GET / 200 in 4447ms
+ ⚠ ./node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/app/node_modules/pino/lib'
+
+Import trace for requested module:
+./node_modules/pino/lib/tools.js
+./node_modules/pino/pino.js
+./node_modules/@walletconnect/logger/dist/index.es.js
+./node_modules/@walletconnect/universal-provider/dist/index.es.js
+./node_modules/@walletconnect/solana-adapter/dist/core.js
+./node_modules/@walletconnect/solana-adapter/dist/adapter.js
+./node_modules/@solana/wallet-adapter-walletconnect/lib/esm/index.js
+./node_modules/@solana/wallet-adapter-wallets/lib/esm/index.js
+./components/SolanaProvider.tsx
+ ⚠ ./node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/app/node_modules/pino/lib'
+
+Import trace for requested module:
+./node_modules/pino/lib/tools.js
+./node_modules/pino/pino.js
+./node_modules/@walletconnect/logger/dist/index.es.js
+./node_modules/@walletconnect/universal-provider/dist/index.es.js
+./node_modules/@walletconnect/solana-adapter/dist/core.js
+./node_modules/@walletconnect/solana-adapter/dist/adapter.js
+./node_modules/@solana/wallet-adapter-walletconnect/lib/esm/index.js
+./node_modules/@solana/wallet-adapter-wallets/lib/esm/index.js
+./components/SolanaProvider.tsx
+ ⨯ [Error: Invariant: missing bootstrap script. This is a bug in Next.js]
+ ⚠ ./node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/app/node_modules/pino/lib'
+
+Import trace for requested module:
+./node_modules/pino/lib/tools.js
+./node_modules/pino/pino.js
+./node_modules/@walletconnect/logger/dist/index.es.js
+./node_modules/@walletconnect/universal-provider/dist/index.es.js
+./node_modules/@walletconnect/solana-adapter/dist/core.js
+./node_modules/@walletconnect/solana-adapter/dist/adapter.js
+./node_modules/@solana/wallet-adapter-walletconnect/lib/esm/index.js
+./node_modules/@solana/wallet-adapter-wallets/lib/esm/index.js
+./components/SolanaProvider.tsx
+ ⚠ ./node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/app/node_modules/pino/lib'
+
+Import trace for requested module:
+./node_modules/pino/lib/tools.js
+./node_modules/pino/pino.js
+./node_modules/@walletconnect/logger/dist/index.es.js
+./node_modules/@walletconnect/universal-provider/dist/index.es.js
+./node_modules/@walletconnect/solana-adapter/dist/core.js
+./node_modules/@walletconnect/solana-adapter/dist/adapter.js
+./node_modules/@solana/wallet-adapter-walletconnect/lib/esm/index.js
+./node_modules/@solana/wallet-adapter-wallets/lib/esm/index.js
+./components/SolanaProvider.tsx
+ GET / 500 in 10521ms
+Your application is presently configured to use the `UnsafeBurnerWalletAdapter`. Find and remove it, then replace it with a list of adapters for wallets you would like your application to support. See https://github.com/anza-xyz/wallet-adapter#usage for an example.
+ GET / 200 in 777ms
+Your application is presently configured to use the `UnsafeBurnerWalletAdapter`. Find and remove it, then replace it with a list of adapters for wallets you would like your application to support. See https://github.com/anza-xyz/wallet-adapter#usage for an example.
+ GET / 200 in 225ms
+ ⨯ Error: Cannot find module './638.js'
+Require stack:
+- /app/.next/server/webpack-runtime.js
+- /app/.next/server/app/page.js
+- /app/node_modules/next/dist/server/require.js
+- /app/node_modules/next/dist/server/load-components.js
+- /app/node_modules/next/dist/build/utils.js
+- /app/node_modules/next/dist/build/swc/options.js
+- /app/node_modules/next/dist/build/swc/index.js
+- /app/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /app/node_modules/next/dist/server/config.js
+- /app/node_modules/next/dist/server/next.js
+- /app/node_modules/next/dist/server/lib/start-server.js
+    at __webpack_require__.f.require (.next/server/webpack-runtime.js:198:28)
+    at <unknown> (.next/server/webpack-runtime.js:111:40)
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (.next/server/webpack-runtime.js:162:22)
+    at <unknown> (.next/server/app/_not-found/page.js:1:15860)
+    at Object.<anonymous> (.next/server/app/_not-found/page.js:1:15905) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ Error: Cannot find module './638.js'
+Require stack:
+- /app/.next/server/webpack-runtime.js
+- /app/.next/server/app/page.js
+- /app/node_modules/next/dist/server/require.js
+- /app/node_modules/next/dist/server/load-components.js
+- /app/node_modules/next/dist/build/utils.js
+- /app/node_modules/next/dist/build/swc/options.js
+- /app/node_modules/next/dist/build/swc/index.js
+- /app/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /app/node_modules/next/dist/server/config.js
+- /app/node_modules/next/dist/server/next.js
+- /app/node_modules/next/dist/server/lib/start-server.js
+    at __webpack_require__.f.require (.next/server/webpack-runtime.js:198:28)
+    at <unknown> (.next/server/webpack-runtime.js:111:40)
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (.next/server/webpack-runtime.js:162:22)
+    at <unknown> (.next/server/app/_not-found/page.js:1:15860)
+    at Object.<anonymous> (.next/server/app/_not-found/page.js:1:15905) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ GET /_next/static/css/app/layout.css?v=1776624242103 500 in 224ms
+ GET /_next/static/chunks/webpack.js?v=1776624242103 500 in 218ms
+ ⨯ Error: Cannot find module './638.js'
+Require stack:
+- /app/.next/server/webpack-runtime.js
+- /app/.next/server/app/page.js
+- /app/node_modules/next/dist/server/require.js
+- /app/node_modules/next/dist/server/load-components.js
+- /app/node_modules/next/dist/build/utils.js
+- /app/node_modules/next/dist/build/swc/options.js
+- /app/node_modules/next/dist/build/swc/index.js
+- /app/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /app/node_modules/next/dist/server/config.js
+- /app/node_modules/next/dist/server/next.js
+- /app/node_modules/next/dist/server/lib/start-server.js
+    at __webpack_require__.f.require (.next/server/webpack-runtime.js:198:28)
+    at <unknown> (.next/server/webpack-runtime.js:111:40)
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (.next/server/webpack-runtime.js:162:22)
+    at <unknown> (.next/server/app/_not-found/page.js:1:15860)
+    at Object.<anonymous> (.next/server/app/_not-found/page.js:1:15905) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ Error: Cannot find module './638.js'
+Require stack:
+- /app/.next/server/webpack-runtime.js
+- /app/.next/server/app/page.js
+- /app/node_modules/next/dist/server/require.js
+- /app/node_modules/next/dist/server/load-components.js
+- /app/node_modules/next/dist/build/utils.js
+- /app/node_modules/next/dist/build/swc/options.js
+- /app/node_modules/next/dist/build/swc/index.js
+- /app/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /app/node_modules/next/dist/server/config.js
+- /app/node_modules/next/dist/server/next.js
+- /app/node_modules/next/dist/server/lib/start-server.js
+    at __webpack_require__.f.require (.next/server/webpack-runtime.js:198:28)
+    at <unknown> (.next/server/webpack-runtime.js:111:40)
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (.next/server/webpack-runtime.js:162:22)
+    at <unknown> (.next/server/app/_not-found/page.js:1:15860)
+    at Object.<anonymous> (.next/server/app/_not-found/page.js:1:15905) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ Error: Cannot find module './638.js'
+Require stack:
+- /app/.next/server/webpack-runtime.js
+- /app/.next/server/app/page.js
+- /app/node_modules/next/dist/server/require.js
+- /app/node_modules/next/dist/server/load-components.js
+- /app/node_modules/next/dist/build/utils.js
+- /app/node_modules/next/dist/build/swc/options.js
+- /app/node_modules/next/dist/build/swc/index.js
+- /app/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /app/node_modules/next/dist/server/config.js
+- /app/node_modules/next/dist/server/next.js
+- /app/node_modules/next/dist/server/lib/start-server.js
+    at __webpack_require__.f.require (.next/server/webpack-runtime.js:198:28)
+    at <unknown> (.next/server/webpack-runtime.js:111:40)
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (.next/server/webpack-runtime.js:162:22)
+    at <unknown> (.next/server/app/_not-found/page.js:1:15860)
+    at Object.<anonymous> (.next/server/app/_not-found/page.js:1:15905) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ ⨯ Error: Cannot find module './638.js'
+Require stack:
+- /app/.next/server/webpack-runtime.js
+- /app/.next/server/app/page.js
+- /app/node_modules/next/dist/server/require.js
+- /app/node_modules/next/dist/server/load-components.js
+- /app/node_modules/next/dist/build/utils.js
+- /app/node_modules/next/dist/build/swc/options.js
+- /app/node_modules/next/dist/build/swc/index.js
+- /app/node_modules/next/dist/build/next-config-ts/transpile-config.js
+- /app/node_modules/next/dist/server/config.js
+- /app/node_modules/next/dist/server/next.js
+- /app/node_modules/next/dist/server/lib/start-server.js
+    at __webpack_require__.f.require (.next/server/webpack-runtime.js:198:28)
+    at <unknown> (.next/server/webpack-runtime.js:111:40)
+    at Array.reduce (<anonymous>)
+    at __webpack_require__.e (.next/server/webpack-runtime.js:110:67)
+    at Array.map (<anonymous>)
+    at __webpack_require__.X (.next/server/webpack-runtime.js:162:22)
+    at <unknown> (.next/server/app/_not-found/page.js:1:15860)
+    at Object.<anonymous> (.next/server/app/_not-found/page.js:1:15905) {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: [Array]
+}
+ GET /_next/static/chunks/main-app.js?v=1776624242103 500 in 265ms
+ GET /_next/static/chunks/app-pages-internals.js 500 in 264ms
+ GET /_next/static/chunks/app/layout.js 500 in 263ms
+ GET /_next/static/chunks/app/page.js 500 in 262ms

@@ -82,13 +82,13 @@ export default function Hero() {
               className="absolute inset-0 rounded-full border-2 border-dashed border-emerald-500/20"
             />
             <div className="absolute inset-4 rounded-full border border-emerald-500/10" />
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full">
                <Image
-                src="/logo.png"
-                alt="Logo"
-                width={300}
-                height={300}
-                className="w-40 h-40 md:w-56 md:h-56 lg:w-72 lg:h-72 object-contain drop-shadow-[0_0_30px_rgba(52,211,153,0.3)]"
+                src="/profile.png"
+                alt="Aldino"
+                width={450}
+                height={450}
+                className="w-full h-full object-cover drop-shadow-[0_0_30px_rgba(52,211,153,0.3)]"
                />
             </div>
           </div>

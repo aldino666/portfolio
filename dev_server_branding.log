@@ -1,0 +1,27 @@
+
+> portfolio@0.1.0 dev
+> next dev
+
+ ⚠ Port 3000 is in use, trying 3001 instead.
+   ▲ Next.js 15.1.4
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.0.2:3001
+
+ ✓ Starting...
+ ✓ Ready in 4.7s
+ ○ Compiling / ...
+ ⚠ ./node_modules/pino/lib/tools.js
+Module not found: Can't resolve 'pino-pretty' in '/app/node_modules/pino/lib'
+
+Import trace for requested module:
+./node_modules/pino/lib/tools.js
+./node_modules/pino/pino.js
+./node_modules/@walletconnect/logger/dist/index.es.js
+./node_modules/@walletconnect/universal-provider/dist/index.es.js
+./node_modules/@walletconnect/solana-adapter/dist/core.js
+./node_modules/@walletconnect/solana-adapter/dist/adapter.js
+./node_modules/@solana/wallet-adapter-walletconnect/lib/esm/index.js
+./node_modules/@solana/wallet-adapter-wallets/lib/esm/index.js
+./components/SolanaProvider.tsx
+Your application is presently configured to use the `UnsafeBurnerWalletAdapter`. Find and remove it, then replace it with a list of adapters for wallets you would like your application to support. See https://github.com/anza-xyz/wallet-adapter#usage for an example.
+ GET / 200 in 23868ms
