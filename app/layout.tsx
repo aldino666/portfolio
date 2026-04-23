@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "react-toastify/dist/ReactToastify.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { SolanaProvider } from "@/components/SolanaProvider";
+import { ToastContainer } from "react-toastify";
 
 export const metadata: Metadata = {
   title: "Portfolio | Web & Web3 & SAP",
@@ -19,6 +21,7 @@ export default function RootLayout({
         <LanguageProvider>
           <SolanaProvider>
             {children}
+            <ToastContainer position="bottom-right" theme="dark" />
           </SolanaProvider>
         </LanguageProvider>
       </body>

@@ -1,11 +1,56 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Section, SectionHeading, GlassCard, Button } from "./UI";
-import { Github, Linkedin, Wallet } from "lucide-react";
+import { Github, Linkedin, Wallet, Loader2 } from "lucide-react";
+import { toast } from "react-toastify";
+import emailjs from "@emailjs/browser";
 
 export default function Contact() {
   const { t } = useLanguage();
+  const formRef = useRef<HTMLFormElement>(null);
+  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await emailjs.sendForm(
+        serviceId,
+        templateId,
+        formRef.current!,
+        publicKey
+      );
+
+      toast.success("Message sent successfully!");
+      setFormData({ name: "", email: "", message: "" });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to send the message. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <Section id="contact">
@@ -15,35 +60,48 @@ export default function Contact() {
 
       <div className="grid lg:grid-cols-2 gap-12">
         <GlassCard>
-          <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <form ref={formRef} className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-400">{t('contact_name')}</label>
                 <input
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500/50 transition-colors"
                   placeholder="John Doe"
+                  required
                 />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-400">{t('contact_email')}</label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500/50 transition-colors"
                   placeholder="john@example.com"
+                  required
                 />
               </div>
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-400">{t('contact_message')}</label>
               <textarea
+                name="message"
+                value={formData.message}
+                onChange={handleChange}
                 rows={5}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500/50 transition-colors resize-none"
                 placeholder="How can I help you?"
+                required
               ></textarea>
             </div>
-            <Button className="w-full">
-              {t('contact_send')}
+            <Button className="w-full flex items-center justify-center gap-2" disabled={loading}>
+              {loading && <Loader2 size={18} className="animate-spin" />}
+              {loading ? "..." : t('contact_send')}
             </Button>
           </form>
         </GlassCard>
