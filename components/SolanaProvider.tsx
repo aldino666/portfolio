@@ -5,8 +5,7 @@ import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import {
     PhantomWalletAdapter,
-    SolflareWalletAdapter,
-    UnsafeBurnerWalletAdapter
+    SolflareWalletAdapter
 } from '@solana/wallet-adapter-wallets';
 import {
     WalletModalProvider,
@@ -25,7 +24,6 @@ export const SolanaProvider = ({ children }: { children: React.ReactNode }) => {
         () => [
             new PhantomWalletAdapter(),
             new SolflareWalletAdapter(),
-            new UnsafeBurnerWalletAdapter(),
         ],
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [network]
