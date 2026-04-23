@@ -21,7 +21,7 @@ export default function Journey() {
       type: "focus"
     },
     {
-      year: "2023",
+      year: "2023 - Present",
       title: t('journey_web3_title'),
       desc: t('journey_web3_desc'),
       type: "focus"
