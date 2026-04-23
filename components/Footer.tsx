@@ -1,11 +1,17 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Github, Linkedin } from "lucide-react";
 
 export default function Footer() {
   const { t } = useLanguage();
+  const [year, setYear] = useState<number | null>(null);
+
+  useEffect(() => {
+    setYear(new Date().getFullYear());
+  }, []);
 
   return (
     <footer className="py-12 px-6 border-t border-white/5 bg-black/20">
@@ -16,7 +22,7 @@ export default function Footer() {
         </div>
 
         <p className="text-gray-500 text-sm">
-          © {new Date().getFullYear()} — {t('footer_rights')}
+          © {year || '...'} — {t('footer_rights')}
         </p>
 
         <div className="flex gap-6 text-gray-500">

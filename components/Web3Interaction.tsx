@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import {
@@ -23,6 +23,11 @@ export default function Web3Interaction() {
     const [amount, setAmount] = useState("");
     const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
     const [txHash, setTxHash] = useState("");
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleSend = async () => {
         if (!publicKey || !amount) return;
@@ -63,9 +68,9 @@ export default function Web3Interaction() {
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                         <div>
                             <div className="flex items-center gap-3 mb-6">
-                                <div className={`w-3 h-3 rounded-full ${publicKey ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
+                                <div className={`w-3 h-3 rounded-full ${mounted && publicKey ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
                                 <span className="text-sm font-medium text-gray-400">
-                                    {publicKey ? t('wallet_connected') : t('wallet_not_connected')}
+                                    {mounted && publicKey ? t('wallet_connected') : t('wallet_not_connected')}
                                 </span>
                             </div>
 
@@ -78,11 +83,15 @@ export default function Web3Interaction() {
                                 {t('web3_support_desc')}
                             </p>
 
-                            <WalletMultiButton className="!bg-emerald-500 !rounded-full !font-bold hover:!bg-emerald-600 transition-all" />
+                            {mounted ? (
+                                <WalletMultiButton className="!bg-emerald-500 !rounded-full !font-bold hover:!bg-emerald-600 transition-all" />
+                            ) : (
+                                <div className="h-12 w-48 bg-white/5 animate-pulse rounded-full" />
+                            )}
                         </div>
 
                         <AnimatePresence mode="wait">
-                            {publicKey ? (
+                            {mounted && publicKey ? (
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
