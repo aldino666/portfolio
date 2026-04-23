@@ -13,7 +13,7 @@ export default function Background() {
           y: [0, 30, 0]
         }}
         transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-emerald-500/10 rounded-full blur-[120px]"
+        className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[120px]"
       />
       <motion.div
         animate={{
@@ -23,12 +23,14 @@ export default function Background() {
           y: [0, -60, 0]
         }}
         transition={{ duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-        className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-green-600/5 rounded-full blur-[150px]"
+        className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] bg-cyan-600/5 rounded-full blur-[150px]"
       />
 
       {/* Subtle grid pattern */}
-      <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay" />
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:64px_64px]" />
+
+      {/* Noise overlay */}
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay bg-[url('https://res.cloudinary.com/dzv9rqg45/image/upload/v1684495514/noise_fcc8y4.png')]" />
     </div>
   );
 }

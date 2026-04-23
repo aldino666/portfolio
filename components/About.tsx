@@ -9,9 +9,9 @@ export default function About() {
   const { t } = useLanguage();
 
   const specialties = [
-    { icon: <Code2 className="text-emerald-400" />, title: t('spec_web_title'), desc: t('spec_web_desc') },
-    { icon: <Blocks className="text-emerald-400" />, title: t('spec_web3_title'), desc: t('spec_web3_desc') },
-    { icon: <Database className="text-emerald-400" />, title: t('spec_sap_title'), desc: t('spec_sap_desc') }
+    { icon: <Code2 className="text-primary" />, title: t('spec_web_title'), desc: t('spec_web_desc') },
+    { icon: <Blocks className="text-primary" />, title: t('spec_web3_title'), desc: t('spec_web3_desc') },
+    { icon: <Database className="text-primary" />, title: t('spec_sap_title'), desc: t('spec_sap_desc') }
   ];
 
   return (
@@ -20,37 +20,41 @@ export default function About() {
         {t('about_title')}
       </SectionHeading>
 
-      <div className="grid md:grid-cols-2 gap-12 items-center">
+      <div className="grid md:grid-cols-2 gap-16 items-start">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="space-y-6"
+          className="space-y-8"
         >
-          <p className="text-gray-300 text-lg leading-relaxed">
+          <p className="text-gray-300 text-xl leading-relaxed font-medium">
             {t('about_text')}
           </p>
-          <p className="text-gray-400">
-            {t('about_approach')}
-          </p>
+          <div className="p-1 bg-gradient-to-r from-primary/30 to-transparent rounded-lg">
+            <div className="bg-darker-gray p-6 rounded-lg">
+              <p className="text-gray-400 font-bold uppercase tracking-wider text-sm">
+                {t('about_approach')}
+              </p>
+            </div>
+          </div>
         </motion.div>
 
-        <div className="grid gap-4">
+        <div className="grid gap-6">
           {specialties.map((item, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <GlassCard className="flex items-start gap-4 p-5 group hover:border-emerald-500/30">
-                <div className="p-3 rounded-xl bg-emerald-500/10 group-hover:bg-emerald-500/20 transition-colors">
+              <GlassCard className="flex items-center gap-6 p-6 group">
+                <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-primary/10 transition-all duration-500 transform group-hover:rotate-6">
                   {item.icon}
                 </div>
                 <div>
-                  <h3 className="font-bold mb-1 text-white">{item.title}</h3>
-                  <p className="text-sm text-gray-400">{item.desc}</p>
+                  <h3 className="font-black text-lg mb-1 text-white uppercase tracking-tight">{item.title}</h3>
+                  <p className="text-sm text-gray-400 font-medium leading-snug">{item.desc}</p>
                 </div>
               </GlassCard>
             </motion.div>

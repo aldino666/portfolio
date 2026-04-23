@@ -1,7 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/context/LanguageContext";
-import { Section, SectionHeading } from "./UI";
+import { Section, SectionHeading, GlassCard } from "./UI";
 import { motion } from "framer-motion";
 
 export default function Journey() {
@@ -47,32 +47,38 @@ export default function Journey() {
   ];
 
   return (
-    <Section>
+    <Section id="journey">
       <SectionHeading subtitle={t('journey_subtitle')}>
         {t('experience_title')}
       </SectionHeading>
 
-      <div className="relative border-l-2 border-emerald-500/20 ml-4 md:ml-8 space-y-12 pb-8">
+      <div className="relative ml-4 md:ml-12 border-l-4 border-white/5 space-y-16 py-8">
         {milestones.map((item, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className="relative pl-10"
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+            className="relative pl-12 group"
           >
-            {/* Dot */}
-            <div className="absolute left-[-9px] top-0 w-4 h-4 rounded-full bg-[#0a0a0a] border-2 border-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
+            {/* Timeline Marker */}
+            <div className="absolute left-[-14px] top-0 w-6 h-6 rounded-lg bg-darker-gray border-4 border-white/10 group-hover:border-primary transition-all duration-300 group-hover:rotate-45" />
 
-            <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
-              <span className="text-emerald-400 font-mono text-sm font-bold">{item.year}</span>
-              <h3 className="text-xl font-bold">{item.title}</h3>
-            </div>
+            <GlassCard className="p-8 border-transparent hover:border-primary/20 bg-dark-gray/20">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                <h3 className="text-2xl font-black uppercase tracking-tighter text-white group-hover:text-primary transition-colors">
+                  {item.title}
+                </h3>
+                <span className="px-4 py-1.5 rounded-lg bg-primary/10 text-primary font-black text-xs uppercase tracking-widest border border-primary/20 whitespace-nowrap">
+                  {item.year}
+                </span>
+              </div>
 
-            <p className="text-gray-400 max-w-2xl">
-              {item.desc}
-            </p>
+              <p className="text-gray-400 font-medium text-lg leading-relaxed max-w-4xl group-hover:text-gray-300 transition-colors">
+                {item.desc}
+              </p>
+            </GlassCard>
           </motion.div>
         ))}
       </div>

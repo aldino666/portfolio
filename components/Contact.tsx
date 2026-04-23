@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Section, SectionHeading, GlassCard, Button } from "./UI";
-import { Github, Linkedin, Wallet, Loader2, Copy, Check } from "lucide-react";
+import { Github, Linkedin, Wallet, Loader2, Copy, Check, Send } from "lucide-react";
 import { toast } from "react-toastify";
 import emailjs from "@emailjs/browser";
 
@@ -72,97 +72,103 @@ export default function Contact() {
         {t('contact_title')}
       </SectionHeading>
 
-      <div className="grid lg:grid-cols-2 gap-12">
-        <GlassCard>
-          <form ref={formRef} className="space-y-6" onSubmit={handleSubmit}>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">{t('contact_name')}</label>
+      <div className="grid lg:grid-cols-2 gap-16">
+        <GlassCard className="bg-dark-gray/30 p-10 border-white/5">
+          <form ref={formRef} className="space-y-8" onSubmit={handleSubmit}>
+            <div className="space-y-6">
+              <div className="space-y-3">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">{t('contact_name')}</label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                  className="w-full bg-darker-gray/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-primary/50 transition-all font-bold"
                   placeholder="John Doe"
                   required
                 />
               </div>
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-gray-400">{t('contact_email')}</label>
+              <div className="space-y-3">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">{t('contact_email')}</label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                  className="w-full bg-darker-gray/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-primary/50 transition-all font-bold"
                   placeholder="john@example.com"
                   required
                 />
               </div>
+              <div className="space-y-3">
+                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">{t('contact_message')}</label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  rows={4}
+                  className="w-full bg-darker-gray/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-primary/50 transition-all font-bold resize-none"
+                  placeholder="How can I help you?"
+                  required
+                ></textarea>
+              </div>
             </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-400">{t('contact_message')}</label>
-              <textarea
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={5}
-                className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500/50 transition-colors resize-none"
-                placeholder="How can I help you?"
-                required
-              ></textarea>
-            </div>
-            <Button className="w-full flex items-center justify-center gap-2" disabled={loading}>
-              {loading && <Loader2 size={18} className="animate-spin" />}
-              {loading ? "..." : t('contact_send')}
+            <Button className="w-full flex items-center justify-center gap-3 h-14 uppercase tracking-widest text-sm" disabled={loading}>
+              {loading ? (
+                <Loader2 size={20} className="animate-spin" />
+              ) : (
+                <>
+                  <Send size={20} />
+                  {t('contact_send')}
+                </>
+              )}
             </Button>
           </form>
         </GlassCard>
 
-        <div className="flex flex-col justify-between py-4">
-          <div className="space-y-8">
-            <h3 className="text-2xl font-bold">{t('contact_connect')}</h3>
-            <div className="grid gap-6">
-              <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
-                <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-emerald-500/10 text-gray-400 group-hover:text-emerald-400 transition-all">
-                  <Github size={24} />
+        <div className="flex flex-col justify-between py-6">
+          <div className="space-y-12">
+            <h3 className="text-3xl font-black uppercase tracking-tighter">{t('contact_connect')}</h3>
+            <div className="grid gap-8">
+              <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 group">
+                <div className="p-5 rounded-2xl bg-white/5 group-hover:bg-primary group-hover:text-white text-gray-400 transition-all duration-500 transform group-hover:rotate-6">
+                  <Github size={28} />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">GitHub</p>
-                  <p className="font-bold">aldino666</p>
+                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">GitHub</p>
+                  <p className="text-xl font-black uppercase tracking-tight group-hover:text-primary transition-colors">aldino666</p>
                 </div>
               </a>
-              <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-4 group">
-                <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-blue-500/10 text-gray-400 group-hover:text-blue-400 transition-all">
-                  <Linkedin size={24} />
+              <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 group">
+                <div className="p-5 rounded-2xl bg-white/5 group-hover:bg-primary group-hover:text-white text-gray-400 transition-all duration-500 transform group-hover:rotate-6">
+                  <Linkedin size={28} />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-400">LinkedIn</p>
-                  <p className="font-bold">ramanantsirahonana</p>
+                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">LinkedIn</p>
+                  <p className="text-xl font-black uppercase tracking-tight group-hover:text-primary transition-colors">ramanantsirahonana</p>
                 </div>
               </a>
               <div
                 onClick={handleCopy}
-                className="flex items-center gap-4 group cursor-pointer"
+                className="flex items-center gap-6 group cursor-pointer"
               >
-                <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-purple-500/10 text-gray-400 group-hover:text-purple-400 transition-all">
-                  <Wallet size={24} />
+                <div className="p-5 rounded-2xl bg-white/5 group-hover:bg-primary group-hover:text-white text-gray-400 transition-all duration-500 transform group-hover:rotate-6">
+                  <Wallet size={28} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-400 flex items-center gap-2">
+                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1 flex items-center gap-2">
                     Web3 Identity
-                    {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
+                    {copied ? <Check size={14} className="text-primary" /> : <Copy size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
                   </p>
-                  <p className="font-mono text-xs break-all text-gray-300 group-hover:text-white transition-colors">{SOLANA_ADDRESS}</p>
+                  <p className="font-bold text-xs break-all text-gray-400 group-hover:text-white transition-colors">{SOLANA_ADDRESS}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-12 p-6 rounded-2xl bg-linear-to-br from-emerald-500/10 to-transparent border border-emerald-500/10">
-            <p className="text-emerald-400 font-bold mb-1">{t('contact_sap_expert')}</p>
-            <p className="text-sm text-gray-400">{t('sap_future')}</p>
+          <div className="mt-16 p-8 rounded-2xl bg-dark-gray/20 border border-white/5 group hover:border-primary/20 transition-all">
+            <p className="text-primary font-black text-sm uppercase tracking-widest mb-3">{t('contact_sap_expert')}</p>
+            <p className="text-lg text-gray-400 font-medium leading-snug">{t('sap_future')}</p>
           </div>
         </div>
       </div>

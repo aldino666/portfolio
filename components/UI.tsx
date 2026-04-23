@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 export function Section({ children, className, id }: { children: React.ReactNode, className?: string, id?: string }) {
   return (
-    <section id={id} className={cn("py-20 px-6 max-w-7xl mx-auto", className)}>
+    <section id={id} className={cn("section-padding max-w-7xl mx-auto", className)}>
       {children}
     </section>
   );
@@ -13,43 +13,45 @@ export function Section({ children, className, id }: { children: React.ReactNode
 
 export function SectionHeading({ children, subtitle }: { children: React.ReactNode, subtitle?: string }) {
   return (
-    <div className="mb-12">
-      <motion.h2
-        initial={{ opacity: 0, x: -20 }}
-        whileInView={{ opacity: 1, x: 0 }}
+    <div className="mb-16">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        className="text-3xl md:text-4xl font-bold mb-4"
       >
-        {children}
-        <div className="h-1 w-20 bg-emerald-500 mt-2 rounded-full" />
-      </motion.h2>
-      {subtitle && <p className="text-gray-400 max-w-2xl">{subtitle}</p>}
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 uppercase tracking-tighter">
+          {children}
+        </h2>
+        <div className="h-1.5 w-24 bg-primary rounded-full mb-6" />
+        {subtitle && <p className="text-gray-400 text-lg max-w-2xl font-medium">{subtitle}</p>}
+      </motion.div>
     </div>
   );
 }
 
 export function GlassCard({ children, className }: { children: React.ReactNode, className?: string }) {
   return (
-    <div className={cn("bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all duration-300", className)}>
+    <div className={cn("glass-card p-8 group hover:border-primary/30", className)}>
       {children}
     </div>
   );
 }
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
 }
 
 export function Button({ children, className, variant = "primary", ...props }: ButtonProps) {
   const variants: Record<string, string> = {
-    primary: "bg-emerald-500 hover:bg-emerald-600 text-black",
-    outline: "bg-transparent border border-emerald-500/50 hover:border-emerald-500 text-emerald-400",
-    ghost: "bg-transparent hover:bg-white/5 text-gray-400 hover:text-white"
+    primary: "btn-primary",
+    secondary: "btn-secondary",
+    outline: "bg-transparent border border-primary/50 hover:border-primary text-primary px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/5",
+    ghost: "bg-transparent hover:bg-white/5 text-gray-400 hover:text-white px-6 py-3 rounded-full font-bold transition-all"
   };
 
   return (
     <button
-      className={cn("px-6 py-3 rounded-full font-semibold transition-all active:scale-95 disabled:opacity-50", variants[variant], className)}
+      className={cn(variants[variant], className)}
       {...props}
     >
       {children}
