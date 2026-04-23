@@ -1,13 +1,61 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { motion } from "framer-motion";
-import { Button } from "./UI";
-import Image from "next/image";
-import { Github, Linkedin } from "lucide-react";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import {
+    PublicKey,
+    Transaction,
+    SystemProgram,
+    LAMPORTS_PER_SOL
+} from "@solana/web3.js";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button, GlassCard } from "./UI";
+import { Github, Linkedin, Wallet, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+
+const RECEIVER_WALLET = "5qsHwA8wzwXmv6fQoM1TB23hdr6wqf4kDE5B4JjttoYq";
 
 export default function Hero() {
-  const { t } = useLanguage();
+    const { t } = useLanguage();
+    const { connection } = useConnection();
+    const { publicKey, sendTransaction } = useWallet();
+    const [amount, setAmount] = useState("");
+    const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
+    const [txHash, setTxHash] = useState("");
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    const handleSend = async () => {
+        if (!publicKey || !amount) return;
+
+        try {
+            setStatus("pending");
+            const receiver = new PublicKey(RECEIVER_WALLET);
+            const lamports = parseFloat(amount) * LAMPORTS_PER_SOL;
+
+            const transaction = new Transaction().add(
+                SystemProgram.transfer({
+                    fromPubkey: publicKey,
+                    toPubkey: receiver,
+                    lamports,
+                })
+            );
+
+            const signature = await sendTransaction(transaction, connection);
+            await connection.confirmTransaction(signature, "processed");
+
+            setTxHash(signature);
+            setStatus("success");
+            setAmount("");
+        } catch (error) {
+            console.error("Transaction failed", error);
+            setStatus("error");
+        }
+    };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
@@ -64,34 +112,105 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative flex justify-center lg:justify-end"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative"
         >
-          <div className="relative w-64 h-64 md:w-80 md:h-80 lg:w-[450px] lg:h-[450px]">
-            <motion.div
-              animate={{
-                rotate: 360,
-                scale: [1, 1.05, 1],
-              }}
-              transition={{
-                rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                scale: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-              }}
-              className="absolute inset-0 rounded-full border-2 border-dashed border-emerald-500/20"
-            />
-            <div className="absolute inset-4 rounded-full border border-emerald-500/10" />
-            <div className="absolute inset-0 flex items-center justify-center overflow-hidden rounded-full">
-               <Image
-                src="/profile.png"
-                alt="Aldino"
-                width={450}
-                height={450}
-                className="w-full h-full object-cover drop-shadow-[0_0_30px_rgba(52,211,153,0.3)]"
-               />
-            </div>
-          </div>
+            <GlassCard className="bg-white/5 border-emerald-500/20 p-8">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className={`w-2 h-2 rounded-full ${mounted && publicKey ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}`} />
+                    <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                        {mounted && publicKey ? t('wallet_connected') : t('wallet_not_connected')}
+                    </span>
+                </div>
+
+                <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                    <Wallet className="text-emerald-400" size={20} />
+                    {t('web3_support_title')}
+                </h3>
+
+                <p className="text-gray-400 text-sm mb-6 leading-relaxed">
+                    {t('web3_support_desc')}
+                </p>
+
+                <div className="space-y-4">
+                    {mounted ? (
+                        <WalletMultiButton className="!bg-emerald-500 !w-full !justify-center !rounded-xl !font-bold hover:!bg-emerald-600 transition-all !h-12" />
+                    ) : (
+                        <div className="h-12 w-full bg-white/5 animate-pulse rounded-xl" />
+                    )}
+
+                    <AnimatePresence mode="wait">
+                        {mounted && publicKey && (
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 10 }}
+                                className="space-y-4 pt-4 border-t border-white/10"
+                            >
+                                <div className="relative">
+                                    <input
+                                        type="number"
+                                        value={amount}
+                                        onChange={(e) => setAmount(e.target.value)}
+                                        className="w-full bg-black/20 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-emerald-500/50 transition-colors text-sm"
+                                        placeholder="0.1"
+                                    />
+                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-400 font-bold text-xs">SOL</span>
+                                </div>
+
+                                <Button
+                                    className="w-full flex items-center justify-center gap-2 h-12"
+                                    disabled={status === "pending" || !amount}
+                                    onClick={handleSend}
+                                >
+                                    {status === "pending" ? (
+                                        <Loader2 className="animate-spin" size={18} />
+                                    ) : (
+                                        <Send size={18} />
+                                    )}
+                                    {t('send_button')}
+                                </Button>
+
+                                {status !== "idle" && (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.95 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        className={`p-3 rounded-xl flex items-center gap-3 text-xs ${
+                                            status === "success" ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20" :
+                                            status === "error" ? "bg-red-500/10 text-red-400 border border-red-500/20" :
+                                            "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                                        }`}
+                                    >
+                                        {status === "success" && <CheckCircle2 size={16} />}
+                                        {status === "error" && <AlertCircle size={16} />}
+                                        {status === "pending" && <Loader2 className="animate-spin" size={16} />}
+
+                                        <div>
+                                            <p className="font-bold">
+                                                {status === "success" ? t('status_success') :
+                                                 status === "error" ? t('status_error') :
+                                                 t('status_pending')}
+                                            </p>
+                                            {status === "success" && txHash && (
+                                                <a
+                                                    href={`https://explorer.solana.com/tx/${txHash}?cluster=devnet`}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="underline opacity-70 hover:opacity-100 mt-1 block"
+                                                >
+                                                    {t('web3_view_explorer')}
+                                                </a>
+                                            )}
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+            </GlassCard>
         </motion.div>
       </div>
     </section>
