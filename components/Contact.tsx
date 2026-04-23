@@ -3,12 +3,15 @@
 import { useState, useRef } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Section, SectionHeading, GlassCard, Button } from "./UI";
-import { Github, Linkedin, Wallet, Loader2 } from "lucide-react";
+import { Github, Linkedin, Wallet, Loader2, Copy, Check } from "lucide-react";
 import { toast } from "react-toastify";
 import emailjs from "@emailjs/browser";
 
+const SOLANA_ADDRESS = "5qsHwA8wzwXmv6fQoM1TB23hdr6wqf4kDE5B4JjttoYq";
+
 export default function Contact() {
   const { t } = useLanguage();
+  const [copied, setCopied] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -49,6 +52,17 @@ export default function Contact() {
       toast.error("Failed to send the message. Please try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(SOLANA_ADDRESS);
+      setCopied(true);
+      toast.success("Address copied to clipboard!");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Failed to copy address.");
     }
   };
 
@@ -128,13 +142,19 @@ export default function Contact() {
                   <p className="font-bold">ramanantsirahonana</p>
                 </div>
               </a>
-              <div className="flex items-center gap-4 group">
-                <div className="p-4 rounded-2xl bg-white/5 text-gray-400">
+              <div
+                onClick={handleCopy}
+                className="flex items-center gap-4 group cursor-pointer"
+              >
+                <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-purple-500/10 text-gray-400 group-hover:text-purple-400 transition-all">
                   <Wallet size={24} />
                 </div>
-                <div>
-                  <p className="text-sm text-gray-400">Web3 Identity</p>
-                  <p className="font-mono text-sm break-all">5qsHwA...ttoYq</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-gray-400 flex items-center gap-2">
+                    Web3 Identity
+                    {copied ? <Check size={14} className="text-emerald-400" /> : <Copy size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
+                  </p>
+                  <p className="font-mono text-xs break-all text-gray-300 group-hover:text-white transition-colors">{SOLANA_ADDRESS}</p>
                 </div>
               </div>
             </div>
