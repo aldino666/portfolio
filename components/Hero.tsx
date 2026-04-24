@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { useSolanaNetwork } from "@/context/SolanaContext";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import {
     PublicKey,
@@ -12,22 +13,66 @@ import {
 } from "@solana/web3.js";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, GlassCard } from "./UI";
-import { Github, Linkedin, Wallet, Send, CheckCircle2, AlertCircle, Loader2, ArrowRight } from "lucide-react";
+import { Github, Linkedin, Wallet, Send, CheckCircle2, AlertCircle, Loader2, ArrowRight, Search } from "lucide-react";
+import { getMint } from "@solana/spl-token";
 
 const RECEIVER_WALLET = "5qsHwA8wzwXmv6fQoM1TB23hdr6wqf4kDE5B4JjttoYq";
+
+interface TokenData {
+  address: string;
+  supply: string;
+  decimals: number;
+  mintAuthority: string | null;
+  freezeAuthority: string | null;
+}
 
 export default function Hero() {
     const { t } = useLanguage();
     const { connection } = useConnection();
+    const { network } = useSolanaNetwork();
     const { publicKey, sendTransaction } = useWallet();
     const [amount, setAmount] = useState("");
     const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
     const [txHash, setTxHash] = useState("");
     const [mounted, setMounted] = useState(false);
 
+    // Token Inspector State
+    const [tokenAddress, setTokenAddress] = useState("");
+    const [tokenLoading, setTokenLoading] = useState(false);
+    const [tokenError, setTokenError] = useState<string | null>(null);
+    const [tokenData, setTokenData] = useState<TokenData | null>(null);
+
     useEffect(() => {
         setMounted(true);
     }, []);
+
+    const inspectToken = async () => {
+        if (!tokenAddress) return;
+
+        setTokenLoading(true);
+        setTokenError(null);
+        setTokenData(null);
+
+        try {
+          const mintPubkey = new PublicKey(tokenAddress);
+          const mintInfo = await getMint(connection, mintPubkey);
+
+          const supply = (Number(mintInfo.supply) / Math.pow(10, mintInfo.decimals)).toLocaleString();
+
+          setTokenData({
+            address: mintPubkey.toBase58(),
+            supply,
+            decimals: mintInfo.decimals,
+            mintAuthority: mintInfo.mintAuthority ? mintInfo.mintAuthority.toBase58() : null,
+            freezeAuthority: mintInfo.freezeAuthority ? mintInfo.freezeAuthority.toBase58() : null,
+          });
+        } catch (err) {
+          console.error(err);
+          setTokenError(t('token_error'));
+        } finally {
+          setTokenLoading(false);
+        }
+    };
 
     const handleSend = async () => {
         if (!publicKey || !amount) return;
@@ -120,9 +165,11 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8 }}
-          className="relative"
+          className="relative flex flex-col gap-6"
         >
             <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full -z-10" />
+
+            {/* Solana Support Card */}
             <GlassCard className="p-10 border-white/5 bg-dark-gray/40">
                 <div className="flex items-center justify-between mb-8">
                     <div className="flex items-center gap-3">
@@ -203,7 +250,7 @@ export default function Hero() {
                                             </p>
                                             {status === "success" && txHash && (
                                                 <a
-                                                    href={`https://explorer.solana.com/tx/${txHash}?cluster=devnet`}
+                                                    href={`https://explorer.solana.com/tx/${txHash}${network === 'mainnet-beta' ? '' : `?cluster=${network}`}`}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                     className="underline opacity-70 hover:opacity-100 mt-1 block uppercase tracking-tighter"
@@ -218,6 +265,75 @@ export default function Hero() {
                         )}
                     </AnimatePresence>
                 </div>
+            </GlassCard>
+
+            {/* Token Inspector Card */}
+            <GlassCard className="p-8 border-white/5 bg-dark-gray/40">
+                <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-xl font-bold uppercase tracking-tight flex items-center gap-2">
+                        <Search size={18} className="text-primary" />
+                        {t('token_inspector_title')}
+                    </h3>
+                </div>
+
+                <div className="flex gap-3 mb-6">
+                    <input
+                        type="text"
+                        placeholder={t('token_address_label')}
+                        className="flex-1 bg-darker-gray/50 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 transition-all text-xs font-bold"
+                        value={tokenAddress}
+                        onChange={(e) => setTokenAddress(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && inspectToken()}
+                    />
+                    <Button
+                        onClick={inspectToken}
+                        disabled={tokenLoading || !tokenAddress}
+                        className="px-6 h-12 uppercase tracking-widest text-[10px]"
+                    >
+                        {tokenLoading ? <Loader2 className="animate-spin" size={16} /> : t('token_inspect_button')}
+                    </Button>
+                </div>
+
+                <AnimatePresence mode="wait">
+                    {tokenError && (
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.98 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase"
+                        >
+                            {tokenError}
+                        </motion.div>
+                    )}
+
+                    {tokenData && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="space-y-4"
+                        >
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-darker-gray/50 rounded-xl p-4 border border-white/5">
+                                    <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_supply')}</p>
+                                    <p className="text-xs font-black text-white truncate">{tokenData.supply}</p>
+                                </div>
+                                <div className="bg-darker-gray/50 rounded-xl p-4 border border-white/5">
+                                    <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_security')}</p>
+                                    <div className="flex items-center gap-1">
+                                        {!tokenData.mintAuthority ? (
+                                            <CheckCircle2 size={12} className="text-primary" />
+                                        ) : (
+                                            <AlertCircle size={12} className="text-amber-500" />
+                                        )}
+                                        <span className={`text-[8px] font-black uppercase ${!tokenData.mintAuthority ? 'text-primary' : 'text-amber-500'}`}>
+                                            {!tokenData.mintAuthority ? 'Safe' : 'Risky'}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </GlassCard>
         </motion.div>
       </div>

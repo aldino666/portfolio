@@ -2,13 +2,15 @@
 
 @theme {
   --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --color-primary: #06B6D4;
+  --color-primary: var(--brand-accent);
   --color-dark-gray: #121212;
   --color-darker-gray: #0a0a0a;
 }
 
 @layer base {
   :root {
+    --brand-white: #FFFFFF;
+    --brand-accent: #06B6D4;
     --background: #0a0a0a;
     --foreground: #ededed;
   }

@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { SolanaNetworkProvider } from "@/context/SolanaContext";
 import { SolanaProvider } from "@/components/SolanaProvider";
 import { ToastContainer } from "react-toastify";
 
@@ -25,10 +26,12 @@ export default function RootLayout({
     <html lang="en" className={`dark scroll-smooth ${jetbrainsMono.variable}`}>
       <body className="antialiased font-mono bg-[#0a0a0a] text-white selection:bg-cyan-500/30">
         <LanguageProvider>
-          <SolanaProvider>
-            {children}
-            <ToastContainer position="bottom-right" theme="dark" />
-          </SolanaProvider>
+          <SolanaNetworkProvider>
+            <SolanaProvider>
+              {children}
+              <ToastContainer position="bottom-right" theme="dark" />
+            </SolanaProvider>
+          </SolanaNetworkProvider>
         </LanguageProvider>
       </body>
     </html>

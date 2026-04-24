@@ -36,7 +36,7 @@ export default function Projects() {
     {
       title: t('proj_sap_title'),
       desc: t('proj_sap_desc'),
-      tech: ["SAP UI5", "OData", "ABAP"],
+      tech: ["SAP UI5", "OData V4", "ABAP RAP", "S/4HANA"],
       icon: <Database className="text-primary" />,
       link: "#"
     }
