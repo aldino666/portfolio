@@ -7,7 +7,8 @@ import {
   Globe,
   Cpu,
   Database,
-  Settings
+  Code2,
+  Box
 } from "lucide-react";
 
 export default function Skills() {
@@ -15,24 +16,54 @@ export default function Skills() {
 
   const skillGroups = [
     {
-      title: t('skills_web'),
-      icon: <Globe className="text-primary" />,
-      skills: ["Next.js", "React", "Node.js", "TypeScript", "Tailwind CSS", "REST APIs"]
+      title: t('skills_solana'),
+      icon: <Cpu className="text-primary" />,
+      skills: [
+        { name: "Solana", status: null },
+        { name: "Anchor (Rust)", status: null },
+        { name: "Smart Contracts", status: null },
+        { name: "Wallet Tracking", status: null }
+      ]
     },
     {
-      title: t('skills_web3'),
-      icon: <Cpu className="text-primary" />,
-      skills: ["Smart Contracts", "Rust / Solana", "Wallet Integration", "DeFi / DEX", "Ethers.js"]
+      title: t('skills_ethereum'),
+      icon: <Box className="text-primary" />,
+      skills: [
+        { name: "ERC 4337", status: t('skills_3months') },
+        { name: "Solidity", status: t('skills_learning') },
+        { name: "Hardhat", status: t('skills_learning') },
+        { name: "Ethers.js", status: t('skills_3months') }
+      ]
+    },
+    {
+      title: t('skills_frontend'),
+      icon: <Globe className="text-primary" />,
+      skills: [
+        { name: "TypeScript", status: null },
+        { name: "Next.js / React", status: null },
+        { name: "Tailwind CSS", status: null },
+        { name: "UI/UX Design", status: null }
+      ]
+    },
+    {
+      title: t('skills_backend'),
+      icon: <Code2 className="text-primary" />,
+      skills: [
+        { name: "Rust", status: null },
+        { name: "Node.js", status: null },
+        { name: "JavaScript", status: null },
+        { name: "Python", status: t('skills_learning') }
+      ]
     },
     {
       title: t('skills_sap'),
       icon: <Database className="text-primary" />,
-      skills: ["SAP ERP Basics", "ABAP (Learning)", "Functional Modules", "Business Processes", "Project Management"]
-    },
-    {
-      title: t('skills_tools'),
-      icon: <Settings className="text-primary" />,
-      skills: ["Git / GitHub", "Docker", "PostgreSQL", "Linux", "Vercel / AWS"]
+      skills: [
+        { name: "SAP Fiori", status: null },
+        { name: "SAP ERP", status: null },
+        { name: "OData / RAP", status: null },
+        { name: "Integration", status: null }
+      ]
     }
   ];
 
@@ -42,7 +73,7 @@ export default function Skills() {
         {t('skills_title')}
       </SectionHeading>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {skillGroups.map((group, groupIndex) => (
           <motion.div
             key={groupIndex}
@@ -51,7 +82,7 @@ export default function Skills() {
             viewport={{ once: true }}
             transition={{ delay: groupIndex * 0.1 }}
           >
-            <GlassCard className="h-full group">
+            <GlassCard className="h-full group border-white/5 hover:border-primary/20 transition-colors">
               <div className="flex items-center gap-4 mb-8">
                 <div className="p-3 rounded-xl bg-white/5 group-hover:bg-primary/20 transition-all duration-300">
                   {group.icon}
@@ -61,12 +92,19 @@ export default function Skills() {
 
               <div className="flex flex-wrap gap-2.5">
                 {group.skills.map((skill, skillIndex) => (
-                  <span
+                  <div
                     key={skillIndex}
-                    className="px-4 py-1.5 rounded-lg bg-darker-gray border border-white/5 text-[10px] font-bold uppercase tracking-tighter text-gray-400 group-hover:text-white group-hover:border-primary/30 transition-all"
+                    className="flex items-center gap-2 px-4 py-2 rounded-lg bg-darker-gray border border-white/5 group-hover:border-primary/10 transition-all"
                   >
-                    {skill}
-                  </span>
+                    <span className="text-[10px] font-black uppercase tracking-tighter text-gray-400 group-hover:text-white transition-colors">
+                      {skill.name}
+                    </span>
+                    {skill.status && (
+                      <span className="text-[7px] px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-black uppercase tracking-tighter">
+                        {skill.status}
+                      </span>
+                    )}
+                  </div>
                 ))}
               </div>
             </GlassCard>
