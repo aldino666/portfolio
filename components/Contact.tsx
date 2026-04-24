@@ -167,7 +167,7 @@ export default function Contact() {
           </div>
 
           <div className="mt-16 p-8 rounded-2xl bg-dark-gray/20 border border-white/5 group hover:border-primary/20 transition-all">
-            <p className="text-primary font-black text-sm uppercase tracking-widest mb-3">{t('contact_sap_expert')}</p>
+            <p className="text-primary font-black text-sm uppercase tracking-widest mb-3">{t('contact_sap_consultant')}</p>
             <p className="text-lg text-gray-400 font-medium leading-snug">{t('sap_future')}</p>
           </div>
         </div>

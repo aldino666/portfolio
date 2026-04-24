@@ -29,10 +29,10 @@ export default function Skills() {
       title: t('skills_ethereum'),
       icon: <Box className="text-primary" />,
       skills: [
-        { name: "ERC 4337", status: t('skills_3months') },
+        { name: "ERC 4337", status: t('skills_started_january') },
         { name: "Solidity", status: t('skills_learning') },
         { name: "Hardhat", status: t('skills_learning') },
-        { name: "Ethers.js", status: t('skills_3months') }
+        { name: "Ethers.js", status: t('skills_started_january') }
       ]
     },
     {

@@ -73,7 +73,7 @@ export default function Projects() {
     },
     {
       title: t('proj_ecommerce_title'),
-      desc: t('proj_ecommerce_content'),
+      desc: t('proj_ecommerce_desc'),
       tech: ["Java", "Fullstack", "Database"],
       icon: <ShoppingBag className="text-primary" />,
       link: "https://github.com/aldino666/E-Commerce-Plateforme",
