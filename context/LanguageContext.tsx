@@ -116,6 +116,10 @@ const translations = {
     token_status_revoked: 'Revoked (Safe)',
     token_status_active: 'Active (Warning)',
     token_status_none: 'None',
+    tx_confirming: 'Confirming transaction...',
+    tx_success: 'Transaction successful!',
+    tx_failed: 'Transaction failed',
+    invalid_amount: 'Invalid amount',
   },
   fr: {
     nav_projects: 'Projets',
@@ -222,6 +226,10 @@ const translations = {
     token_status_revoked: 'Révoquée (Sûr)',
     token_status_active: 'Active (Attention)',
     token_status_none: 'Aucune',
+    tx_confirming: 'Confirmation de la transaction...',
+    tx_success: 'Transaction réussie !',
+    tx_failed: 'Échec de la transaction',
+    invalid_amount: 'Montant invalide',
   }
 };
 

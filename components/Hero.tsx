@@ -15,6 +15,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button, GlassCard } from "./UI";
 import { Github, Linkedin, Wallet, CheckCircle2, AlertCircle, Loader2, ArrowRight, Search, Terminal, Cpu } from "lucide-react";
 import { getMint } from "@solana/spl-token";
+import { toast } from "react-toastify";
 
 const RECEIVER_WALLET = "5qsHwA8wzwXmv6fQoM1TB23hdr6wqf4kDE5B4JjttoYq";
 
@@ -77,13 +78,34 @@ export default function Hero() {
     };
 
     const handleSend = async () => {
-        if (!publicKey || !amount) return;
+        // 1. Pre-validation
+        if (!publicKey) {
+            toast.error(t('wallet_not_connected') || "Wallet not connected");
+            return;
+        }
+        if (!amount || parseFloat(amount) <= 0) {
+            toast.error(t('invalid_amount') || "Invalid amount");
+            return;
+        }
+        if (!connection) {
+            toast.error("Connection not initialized");
+            return;
+        }
 
         try {
             setStatus("pending");
-            const receiver = new PublicKey(RECEIVER_WALLET);
-            const lamports = parseFloat(amount) * LAMPORTS_PER_SOL;
 
+            // Debugging Logs
+            console.log("--- START TRANSACTION ---");
+            console.log("RPC Endpoint:", connection.rpcEndpoint);
+            console.log("Wallet Public Key:", publicKey.toBase58());
+            console.log("Amount (SOL):", amount);
+
+            const receiver = new PublicKey(RECEIVER_WALLET);
+            const lamports = Math.floor(parseFloat(amount) * LAMPORTS_PER_SOL);
+
+            // 2. Transaction Build
+            const latestBlockhash = await connection.getLatestBlockhash();
             const transaction = new Transaction().add(
                 SystemProgram.transfer({
                     fromPubkey: publicKey,
@@ -92,15 +114,35 @@ export default function Hero() {
                 })
             );
 
+            transaction.recentBlockhash = latestBlockhash.blockhash;
+            transaction.feePayer = publicKey;
+
+            console.log("Transaction Object:", transaction);
+
+            // 3. Send Transaction
             const signature = await sendTransaction(transaction, connection);
-            await connection.confirmTransaction(signature, "processed");
+            console.log("Signature Received:", signature);
+
+            // 4. Confirmation Strategy
+            toast.info(t('tx_confirming') || "Confirming transaction...");
+            await connection.confirmTransaction({
+                signature,
+                ...latestBlockhash
+            }, "confirmed");
 
             setTxHash(signature);
             setStatus("success");
             setAmount("");
-        } catch (error) {
-            console.error("Transaction failed", error);
+            toast.success(t('tx_success') || "Transaction successful!");
+            console.log("--- TRANSACTION SUCCESS ---");
+        } catch (error: unknown) {
+            console.error("--- TRANSACTION FAILED ---");
+            console.error(error);
             setStatus("error");
+
+            // User Feedback
+            const errorMsg = error instanceof Error ? error.message : String(error);
+            toast.error(`${t('tx_failed') || "Transaction failed"}: ${errorMsg.slice(0, 50)}...`);
         }
     };
 
