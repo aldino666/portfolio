@@ -15,31 +15,45 @@ export default function About() {
   ];
 
   return (
-    <Section id="about">
+    <Section id="about" className="relative">
+      <div className="absolute top-0 right-0 p-20 opacity-[0.03] -z-10 pointer-events-none">
+        <Blocks size={400} />
+      </div>
+
       <SectionHeading subtitle={t('about_subtitle')}>
         {t('about_title')}
       </SectionHeading>
 
-      <div className="grid md:grid-cols-2 gap-16 items-start">
+      <div className="grid lg:grid-cols-12 gap-8 items-start">
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          className="space-y-8"
+          className="lg:col-span-7 space-y-8"
         >
-          <p className="text-gray-300 text-xl leading-relaxed font-medium">
-            {t('about_text')}
-          </p>
-          <div className="p-1 bg-gradient-to-r from-primary/30 to-transparent rounded-lg">
-            <div className="bg-darker-gray p-6 rounded-lg">
-              <p className="text-gray-400 font-bold uppercase tracking-wider text-sm">
-                {t('about_approach')}
-              </p>
-            </div>
+          <GlassCard className="p-10 border-primary/10 bg-white/[0.02]">
+            <p className="text-gray-300 text-xl leading-relaxed font-medium font-mono">
+              <span className="text-primary font-black mr-2">&gt;</span>
+              {t('about_text')}
+              <span className="inline-block w-2 h-5 bg-primary/40 ml-2 animate-pulse align-middle" />
+            </p>
+          </GlassCard>
+
+          <div className="flex gap-4">
+            <div className="flex-1 h-[1px] bg-gradient-to-r from-primary/50 to-transparent self-center" />
+            <p className="text-[10px] font-black text-primary uppercase tracking-[0.4em] whitespace-nowrap">
+              Operational Mindset
+            </p>
+          </div>
+
+          <div className="bg-primary/5 border-l-4 border-primary p-8 rounded-r-xl">
+            <p className="text-gray-400 font-black uppercase tracking-widest text-xs leading-relaxed">
+              {t('about_approach')}
+            </p>
           </div>
         </motion.div>
 
-        <div className="grid gap-6">
+        <div className="lg:col-span-5 grid gap-4">
           {specialties.map((item, index) => (
             <motion.div
               key={index}
@@ -48,13 +62,13 @@ export default function About() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
             >
-              <GlassCard className="flex items-center gap-6 p-6 group">
-                <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-primary/10 transition-all duration-500 transform group-hover:rotate-6">
+              <GlassCard className="flex items-center gap-6 p-6 border-white/5 hover:border-primary/30 group transition-all duration-500">
+                <div className="p-4 bg-white/5 group-hover:bg-primary/10 transition-all duration-500 text-primary">
                   {item.icon}
                 </div>
                 <div>
-                  <h3 className="font-black text-lg mb-1 text-white uppercase tracking-tight">{item.title}</h3>
-                  <p className="text-sm text-gray-400 font-medium leading-snug">{item.desc}</p>
+                  <h3 className="font-black text-sm mb-1 text-white uppercase tracking-[0.2em]">{item.title}</h3>
+                  <p className="text-[11px] text-gray-500 font-bold leading-relaxed uppercase">{item.desc}</p>
                 </div>
               </GlassCard>
             </motion.div>

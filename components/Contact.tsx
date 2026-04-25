@@ -3,7 +3,8 @@
 import { useState, useRef } from "react";
 import { useLanguage } from "@/context/LanguageContext";
 import { Section, SectionHeading, GlassCard, Button } from "./UI";
-import { Github, Linkedin, Wallet, Loader2, Copy, Check, Send } from "lucide-react";
+import { motion } from "framer-motion";
+import { Github, Linkedin, Wallet, Loader2, Copy, Check, Send, Cpu, Database } from "lucide-react";
 import { toast } from "react-toastify";
 import emailjs from "@emailjs/browser";
 
@@ -20,9 +21,9 @@ export default function Contact() {
     message: "",
   });
 
-  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? "";
-  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? "";
-  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
+  const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
+  const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
+  const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -67,110 +68,156 @@ export default function Contact() {
   };
 
   return (
-    <Section id="contact">
+    <Section id="contact" className="relative">
       <SectionHeading subtitle={t('contact_subtitle')}>
         {t('contact_title')}
       </SectionHeading>
 
-      <div className="grid lg:grid-cols-2 gap-16">
-        <GlassCard className="bg-dark-gray/30 p-10 border-white/5">
-          <form ref={formRef} className="space-y-8" onSubmit={handleSubmit}>
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">{t('contact_name')}</label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full bg-darker-gray/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-primary/50 transition-all font-bold"
-                  placeholder="John Doe"
-                  required
-                />
+      <div className="grid lg:grid-cols-12 gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-7"
+        >
+          <GlassCard className="p-10 border-white/5 bg-white/[0.01]">
+            <div className="flex justify-between items-center mb-8 pb-4 border-b border-white/5">
+              <h3 className="text-xs font-black uppercase tracking-[0.3em] text-white/40">Transmission Interface</h3>
+              <div className="text-[8px] font-mono text-primary/50 flex gap-2">
+                <span>SECURE</span>
+                <span>v2.1</span>
               </div>
-              <div className="space-y-3">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">{t('contact_email')}</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full bg-darker-gray/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-primary/50 transition-all font-bold"
-                  placeholder="john@example.com"
-                  required
-                />
+            </div>
+
+            <form ref={formRef} className="space-y-6" onSubmit={handleSubmit}>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{t('contact_name')}</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="terminal-input w-full"
+                    placeholder="User_ID"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{t('contact_email')}</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="terminal-input w-full"
+                    placeholder="Auth_Token"
+                    required
+                  />
+                </div>
               </div>
-              <div className="space-y-3">
-                <label className="text-xs font-black text-gray-400 uppercase tracking-widest">{t('contact_message')}</label>
+              <div className="space-y-2">
+                <label className="text-[10px] font-black text-gray-600 uppercase tracking-widest">{t('contact_message')}</label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  rows={4}
-                  className="w-full bg-darker-gray/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-primary/50 transition-all font-bold resize-none"
-                  placeholder="How can I help you?"
+                  rows={5}
+                  className="terminal-input w-full resize-none"
+                  placeholder="Input packet content here..."
                   required
                 ></textarea>
               </div>
-            </div>
-            <Button className="w-full flex items-center justify-center gap-3 h-14 uppercase tracking-widest text-sm" disabled={loading}>
-              {loading ? (
-                <Loader2 size={20} className="animate-spin" />
-              ) : (
-                <>
-                  <Send size={20} />
-                  {t('contact_send')}
-                </>
-              )}
-            </Button>
-          </form>
-        </GlassCard>
-
-        <div className="flex flex-col justify-between py-6">
-          <div className="space-y-12">
-            <h3 className="text-3xl font-black uppercase tracking-tighter">{t('contact_connect')}</h3>
-            <div className="grid gap-8">
-              <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 group">
-                <div className="p-5 rounded-2xl bg-white/5 group-hover:bg-primary group-hover:text-white text-gray-400 transition-all duration-500 transform group-hover:rotate-6">
-                  <Github size={28} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">GitHub</p>
-                  <p className="text-xl font-black uppercase tracking-tight group-hover:text-primary transition-colors">aldino666</p>
-                </div>
-              </a>
-              <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-6 group">
-                <div className="p-5 rounded-2xl bg-white/5 group-hover:bg-primary group-hover:text-white text-gray-400 transition-all duration-500 transform group-hover:rotate-6">
-                  <Linkedin size={28} />
-                </div>
-                <div>
-                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1">LinkedIn</p>
-                  <p className="text-xl font-black uppercase tracking-tight group-hover:text-primary transition-colors">ramanantsirahonana</p>
-                </div>
-              </a>
-              <div
-                onClick={handleCopy}
-                className="flex items-center gap-6 group cursor-pointer"
+              <Button
+                className="w-full !rounded-none h-14 !bg-primary !text-black uppercase tracking-[0.4em] text-[10px] font-black shadow-[0_0_20px_rgba(6,182,212,0.2)] hover:shadow-[0_0_30px_rgba(6,182,212,0.4)] transition-all"
+                disabled={loading}
               >
-                <div className="p-5 rounded-2xl bg-white/5 group-hover:bg-primary group-hover:text-white text-gray-400 transition-all duration-500 transform group-hover:rotate-6">
-                  <Wallet size={28} />
+                {loading ? (
+                  <Loader2 size={16} className="animate-spin mx-auto" />
+                ) : (
+                  <>
+                    <Send size={16} className="inline mr-2" />
+                    {t('contact_send')}
+                  </>
+                )}
+              </Button>
+            </form>
+          </GlassCard>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-5 space-y-6"
+        >
+          <div className="grid gap-4">
+            <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="group">
+              <GlassCard className="p-6 flex items-center gap-6 border-white/5 hover:border-primary/30 transition-all duration-500">
+                <div className="p-3 bg-white/5 group-hover:bg-primary group-hover:text-black transition-all duration-500">
+                  <Github size={20} />
+                </div>
+                <div>
+                  <p className="text-[8px] font-black text-gray-600 uppercase tracking-widest mb-1">GitHub Endpoint</p>
+                  <p className="text-sm font-black uppercase tracking-wider text-white">aldino666</p>
+                </div>
+              </GlassCard>
+            </a>
+            <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="group">
+              <GlassCard className="p-6 flex items-center gap-6 border-white/5 hover:border-primary/30 transition-all duration-500">
+                <div className="p-3 bg-white/5 group-hover:bg-primary group-hover:text-black transition-all duration-500">
+                  <Linkedin size={20} />
+                </div>
+                <div>
+                  <p className="text-[8px] font-black text-gray-600 uppercase tracking-widest mb-1">LinkedIn Sync</p>
+                  <p className="text-sm font-black uppercase tracking-wider text-white">ramanantsirahonana</p>
+                </div>
+              </GlassCard>
+            </a>
+          </div>
+
+          <div className="p-6 border-white/5 hover:border-primary/30 transition-all duration-500 cursor-pointer group glass-card" onClick={handleCopy}>
+              <div className="flex items-center gap-6 mb-4">
+                <div className="p-3 bg-white/5 group-hover:bg-primary group-hover:text-black transition-all duration-500">
+                  <Wallet size={20} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-1 flex items-center gap-2">
-                    Web3 Identity
-                    {copied ? <Check size={14} className="text-primary" /> : <Copy size={14} className="opacity-0 group-hover:opacity-100 transition-opacity" />}
-                  </p>
-                  <p className="font-bold text-xs break-all text-gray-400 group-hover:text-white transition-colors">{SOLANA_ADDRESS}</p>
+                  <p className="text-[8px] font-black text-gray-600 uppercase tracking-widest mb-1">Web3 Identity Marker</p>
+                  <p className="text-[10px] font-mono break-all text-gray-400 group-hover:text-white transition-colors">{SOLANA_ADDRESS}</p>
                 </div>
               </div>
-            </div>
+              <div className="flex justify-between items-center text-[8px] font-black uppercase tracking-widest text-primary/40 group-hover:text-primary">
+                <span>{copied ? 'Copied' : 'Click to Copy Address'}</span>
+                {copied ? <Check size={10} /> : <Copy size={10} />}
+              </div>
           </div>
 
-          <div className="mt-16 p-8 rounded-2xl bg-dark-gray/20 border border-white/5 group hover:border-primary/20 transition-all">
-            <p className="text-primary font-black text-sm uppercase tracking-widest mb-3">{t('contact_sap_consultant')}</p>
-            <p className="text-lg text-gray-400 font-medium leading-snug">{t('sap_future')}</p>
+          <div className="grid gap-4">
+            <GlassCard className="p-8 border-primary/20 bg-primary/5 glow-border-cyan relative overflow-hidden group">
+              <div className="relative z-10">
+                <p className="text-[8px] font-black text-primary uppercase tracking-[0.4em] mb-4">Strategic Focus</p>
+                <p className="text-sm text-white font-black uppercase tracking-widest leading-relaxed">
+                  {t('contact_blockchain_expert')}
+                </p>
+              </div>
+              <div className="absolute -right-4 -bottom-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Cpu size={100} />
+              </div>
+            </GlassCard>
+
+            <GlassCard className="p-8 border-white/10 bg-white/5 relative overflow-hidden group">
+              <div className="relative z-10">
+                <p className="text-[8px] font-black text-gray-500 uppercase tracking-[0.4em] mb-4">Enterprise Solutions</p>
+                <p className="text-sm text-white font-black uppercase tracking-widest leading-relaxed">
+                  {t('contact_sap_consultant')}
+                </p>
+              </div>
+              <div className="absolute -right-4 -bottom-4 opacity-5 group-hover:opacity-10 transition-opacity">
+                <Database size={100} />
+              </div>
+            </GlassCard>
           </div>
-        </div>
+        </motion.div>
       </div>
     </Section>
   );

@@ -73,7 +73,7 @@ export default function Projects() {
     },
     {
       title: t('proj_ecommerce_title'),
-      desc: t('proj_ecommerce_desc'),
+      desc: t('proj_ecommerce_content'),
       tech: ["Java", "Fullstack", "Database"],
       icon: <ShoppingBag className="text-primary" />,
       link: "https://github.com/aldino666/E-Commerce-Plateforme",
@@ -92,12 +92,12 @@ export default function Projects() {
   const visibleProjects = showAll ? allProjects : allProjects.slice(0, 4);
 
   return (
-    <Section id="projects">
+    <Section id="projects" className="relative">
       <SectionHeading subtitle={t('projects_subtitle')}>
         {t('projects_title')}
       </SectionHeading>
 
-      <div className="grid md:grid-cols-2 gap-10">
+      <div className="grid md:grid-cols-2 gap-6">
         <AnimatePresence mode="popLayout">
           {visibleProjects.map((project, index) => (
             <motion.div
@@ -108,28 +108,34 @@ export default function Projects() {
               transition={{ delay: index * 0.05, duration: 0.4 }}
               layout
             >
-              <GlassCard className="flex flex-col h-full group p-0 overflow-hidden bg-dark-gray/30 border-white/5 hover:border-primary/20 transition-colors">
-                <div className="p-8 pb-0 flex justify-between items-start">
-                  <div className="p-4 rounded-2xl bg-white/5 group-hover:bg-primary group-hover:text-white transition-all duration-500 transform group-hover:-translate-y-1 shadow-lg">
-                    {project.icon}
-                  </div>
-                  <div className="flex gap-4">
-                    {project.github && (
-                      <a href={project.github} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full text-gray-500 hover:text-white hover:bg-white/5 transition-all">
-                        <Github size={22} />
-                      </a>
-                    )}
-                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="p-2 rounded-full text-gray-500 hover:text-primary hover:bg-primary/5 transition-all">
-                      <ArrowUpRight size={22} />
+              <GlassCard className="flex flex-col h-full group p-0 overflow-hidden bg-white/[0.01] border-white/5 hover:border-primary/30 transition-all duration-500 relative">
+                <div className="absolute top-0 right-0 p-3 flex gap-2">
+                  {project.github && (
+                    <a href={project.github} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 hover:bg-primary hover:text-black transition-all">
+                      <Github size={14} />
                     </a>
-                  </div>
+                  )}
+                  <a href={project.link} target="_blank" rel="noopener noreferrer" className="p-2 bg-white/5 hover:bg-primary hover:text-black transition-all">
+                    <ArrowUpRight size={14} />
+                  </a>
                 </div>
 
-                <div className="p-8 pt-6 flex-grow">
-                  <h3 className="text-2xl font-black mb-4 uppercase tracking-tighter group-hover:text-primary transition-colors">
+                <div className="p-8 pt-12 flex-grow">
+                  <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-primary/10 text-primary group-hover:bg-primary group-hover:text-black transition-all duration-500">
+                      {project.icon}
+                    </div>
+                    <div className="h-[1px] flex-1 bg-white/5 group-hover:bg-primary/20" />
+                    <span className="text-[8px] font-black text-gray-700 uppercase tracking-widest">
+                      PRJ.00{index + 1}
+                    </span>
+                  </div>
+
+                  <h3 className="text-2xl font-black mb-4 uppercase tracking-tighter group-hover:text-primary transition-colors glow-text-cyan">
                     {project.title}
                   </h3>
-                  <p className="text-gray-400 font-medium leading-relaxed mb-8 opacity-80 group-hover:opacity-100 transition-opacity text-sm line-clamp-2">
+
+                  <p className="text-gray-500 font-mono text-[11px] leading-relaxed mb-8 uppercase line-clamp-3">
                     {project.desc}
                   </p>
 
@@ -137,7 +143,7 @@ export default function Projects() {
                     {project.tech.map((tag, i) => (
                       <span
                         key={i}
-                        className="text-[9px] uppercase tracking-widest font-black px-3 py-1.5 rounded-lg bg-darker-gray border border-white/5 text-gray-500 group-hover:border-primary/30 group-hover:text-gray-200 transition-all"
+                        className="text-[8px] uppercase tracking-[0.2em] font-black px-2 py-1 bg-white/5 border border-white/5 text-gray-400 group-hover:border-primary/20 group-hover:text-white transition-all"
                       >
                         {tag}
                       </span>
@@ -145,7 +151,7 @@ export default function Projects() {
                   </div>
                 </div>
 
-                <div className="h-1.5 w-0 bg-primary group-hover:w-full transition-all duration-700" />
+                <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-primary shadow-[0_0_10px_rgba(6,182,212,1)] group-hover:w-full transition-all duration-700" />
               </GlassCard>
             </motion.div>
           ))}
@@ -154,12 +160,11 @@ export default function Projects() {
 
       <motion.div
         layout
-        className="mt-16 flex justify-center"
+        className="mt-12 flex justify-center"
       >
         <Button
-          variant="secondary"
           onClick={() => setShowAll(!showAll)}
-          className="flex items-center gap-3 px-10 h-14"
+          className="flex items-center gap-3 px-8 !rounded-none !bg-white/5 border border-white/10 hover:!bg-primary hover:!text-black !text-[10px] font-black uppercase tracking-[0.3em] transition-all h-12"
         >
           {showAll ? (
             <>

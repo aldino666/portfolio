@@ -18,12 +18,16 @@ export function SectionHeading({ children, subtitle }: { children: React.ReactNo
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       >
-        <h2 className="text-4xl md:text-5xl font-bold mb-4 uppercase tracking-tighter">
-          {children}
-        </h2>
-        <div className="h-1.5 w-24 bg-primary rounded-full mb-6" />
-        {subtitle && <p className="text-gray-400 text-lg max-w-2xl font-medium">{subtitle}</p>}
+        <div className="flex items-center gap-4 mb-4">
+          <div className="h-4 w-[2px] bg-primary animate-pulse" />
+          <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tighter glow-text-cyan">
+            {children}
+          </h2>
+        </div>
+        <div className="h-[1px] w-full bg-gradient-to-r from-primary/30 to-transparent mb-6" />
+        {subtitle && <p className="text-gray-500 text-sm md:text-lg max-w-2xl font-mono uppercase tracking-wider">{subtitle}</p>}
       </motion.div>
     </div>
   );

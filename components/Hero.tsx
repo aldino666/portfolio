@@ -13,7 +13,7 @@ import {
 } from "@solana/web3.js";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, GlassCard } from "./UI";
-import { Github, Linkedin, Wallet, Send, CheckCircle2, AlertCircle, Loader2, ArrowRight, Search } from "lucide-react";
+import { Github, Linkedin, Wallet, CheckCircle2, AlertCircle, Loader2, ArrowRight, Search, Terminal, Cpu } from "lucide-react";
 import { getMint } from "@solana/spl-token";
 
 const RECEIVER_WALLET = "5qsHwA8wzwXmv6fQoM1TB23hdr6wqf4kDE5B4JjttoYq";
@@ -29,12 +29,14 @@ interface TokenData {
 export default function Hero() {
     const { t } = useLanguage();
     const { connection } = useConnection();
-    const { network } = useSolanaNetwork();
+    const { network } = useSolanaNetwork(); void network;
     const { publicKey, sendTransaction } = useWallet();
     const [amount, setAmount] = useState("");
     const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
-    const [txHash, setTxHash] = useState("");
+    const [txHash, setTxHash] = useState(""); void txHash;
     const [mounted, setMounted] = useState(false);
+
+    // Suppress unused warning for build
 
     // Token Inspector State
     const [tokenAddress, setTokenAddress] = useState("");
@@ -103,184 +105,102 @@ export default function Hero() {
     };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center pt-32 pb-20 overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(6,182,212,0.05),transparent_50%)]" />
-      <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/10 rounded-full blur-[120px] -z-10 animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-cyan-600/5 rounded-full blur-[120px] -z-10" />
+    <section className="relative min-h-screen pt-32 pb-20 overflow-hidden command-grid">
+      <div className="absolute inset-0 scanline opacity-10" />
 
-      <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-        >
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="grid lg:grid-cols-12 gap-6">
+
+          {/* Main Command Tile: Profile */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-primary text-xs font-bold uppercase tracking-widest mb-8 shadow-sm"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="lg:col-span-8"
           >
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            {t('available')}
+            <GlassCard className="h-full p-10 flex flex-col justify-between border-primary/20 glow-border-cyan relative overflow-hidden group">
+              <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Terminal size={120} className="text-primary" />
+              </div>
+
+              <div>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-primary/10 border border-primary/30 text-primary text-[10px] font-black uppercase tracking-[0.2em] mb-8"
+                >
+                  <span className="status-dot status-dot-active" />
+                  {t('available')}
+                </motion.div>
+
+                <h1 className="text-6xl md:text-8xl font-black leading-[0.85] mb-6 uppercase tracking-tighter glow-text-cyan">
+                  <span className="text-white">AL</span>
+                  <span className="text-primary">DINO</span>
+                </h1>
+
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="h-[2px] w-12 bg-primary/50" />
+                  <p className="text-primary font-black text-xs uppercase tracking-[0.3em]">
+                    {t('hero_title')}
+                  </p>
+                </div>
+
+                <p className="text-gray-400 text-lg md:text-xl mb-12 max-w-2xl leading-relaxed font-medium font-mono">
+                  &gt; {t('hero_subtitle')}
+                  <span className="inline-block w-2 h-5 bg-primary ml-2 animate-pulse align-middle" />
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-6 items-center">
+                <Button
+                    onClick={() => document.getElementById('projects')?.scrollIntoView()}
+                    className="flex items-center gap-2 !rounded-none !bg-primary !text-black !font-black !px-8 hover:!bg-white transition-colors"
+                >
+                  {t('hero_cta_projects')}
+                  <ArrowRight size={18} />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="!rounded-none border-white/20 text-white hover:border-primary hover:text-primary transition-all font-black !px-8"
+                  onClick={() => document.getElementById('contact')?.scrollIntoView()}
+                >
+                  {t('hero_cta_contact')}
+                </Button>
+
+                <div className="ml-auto flex gap-6">
+                  <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary transition-all transform hover:scale-110">
+                      <Github size={24} />
+                  </a>
+                  <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary transition-all transform hover:scale-110">
+                      <Linkedin size={24} />
+                  </a>
+                </div>
+              </div>
+            </GlassCard>
           </motion.div>
 
-          <h1 className="text-6xl md:text-8xl font-bold leading-[0.9] mb-8 uppercase tracking-tighter">
-            <span className="cyan-gradient-text">ALDINO</span>
-            <br />
-            <span className="text-white text-3xl md:text-5xl block mt-2 opacity-90">{t('hero_title')}</span>
-          </h1>
-
-          <p className="text-gray-400 text-lg md:text-xl mb-12 max-w-xl leading-relaxed font-medium">
-            {t('hero_subtitle')}
-          </p>
-
-          <div className="flex flex-wrap gap-6 items-center">
-            <Button
-                onClick={() => document.getElementById('projects')?.scrollIntoView()}
-                className="flex items-center gap-2"
-            >
-              {t('hero_cta_projects')}
-              <ArrowRight size={18} />
-            </Button>
-            <Button variant="secondary" onClick={() => document.getElementById('contact')?.scrollIntoView()}>
-              {t('hero_cta_contact')}
-            </Button>
-          </div>
-
-          <div className="mt-12 flex gap-8">
-             <a href={t('github_url')} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary transition-all transform hover:scale-110">
-                <Github size={28} />
-             </a>
-             <a href={t('linkedin_url')} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-primary transition-all transform hover:scale-110">
-                <Linkedin size={28} />
-             </a>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          className="relative flex flex-col gap-6"
-        >
-            <div className="absolute inset-0 bg-primary/20 blur-[100px] rounded-full -z-10" />
-
-            {/* Solana Support Card */}
-            <GlassCard className="p-10 border-white/5 bg-dark-gray/40">
-                <div className="flex items-center justify-between mb-8">
-                    <div className="flex items-center gap-3">
-                        <div className={`w-2.5 h-2.5 rounded-full ${mounted && publicKey ? 'bg-primary shadow-[0_0_10px_rgba(6,182,212,0.8)]' : 'bg-red-500'}`} />
-                        <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                            {mounted && publicKey ? t('wallet_connected') : t('wallet_not_connected')}
-                        </span>
-                    </div>
-                    <Wallet className="text-primary/50" size={24} />
-                </div>
-
-                <h3 className="text-2xl font-bold mb-4 uppercase tracking-tight">
-                    {t('web3_support_title')}
-                </h3>
-
-                <p className="text-gray-400 text-sm mb-8 leading-relaxed font-medium">
-                    {t('web3_support_desc')}
-                </p>
-
-                <div className="space-y-6">
-                    {mounted ? (
-                        <WalletMultiButton className="!bg-primary !w-full !justify-center !rounded-xl !font-bold hover:!bg-primary/90 transition-all !h-14 !text-white !uppercase !tracking-widest !text-sm" />
-                    ) : (
-                        <div className="h-14 w-full bg-white/5 animate-pulse rounded-xl" />
-                    )}
-
-                    <AnimatePresence mode="wait">
-                        {mounted && publicKey && (
-                            <motion.div
-                                initial={{ opacity: 0, y: 15 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, y: 15 }}
-                                className="space-y-6 pt-6 border-t border-white/10"
-                            >
-                                <div className="relative">
-                                    <input
-                                        type="number"
-                                        value={amount}
-                                        onChange={(e) => setAmount(e.target.value)}
-                                        className="w-full bg-darker-gray/50 border border-white/10 rounded-xl px-5 py-4 focus:outline-none focus:border-primary/50 transition-all text-sm font-bold"
-                                        placeholder="0.1"
-                                    />
-                                    <span className="absolute right-5 top-1/2 -translate-y-1/2 text-primary font-black text-xs">SOL</span>
-                                </div>
-
-                                <Button
-                                    className="w-full flex items-center justify-center gap-3 h-14 uppercase tracking-widest text-sm"
-                                    disabled={status === "pending" || !amount}
-                                    onClick={handleSend}
-                                >
-                                    {status === "pending" ? (
-                                        <Loader2 className="animate-spin" size={20} />
-                                    ) : (
-                                        <Send size={20} />
-                                    )}
-                                    {t('send_button')}
-                                </Button>
-
-                                {status !== "idle" && (
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.98 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        className={`p-4 rounded-xl flex items-center gap-4 text-xs font-bold ${
-                                            status === "success" ? "bg-primary/10 text-primary border border-primary/20" :
-                                            status === "error" ? "bg-red-500/10 text-red-400 border border-red-500/20" :
-                                            "bg-blue-500/10 text-blue-400 border border-blue-500/20"
-                                        }`}
-                                    >
-                                        {status === "success" && <CheckCircle2 size={20} />}
-                                        {status === "error" && <AlertCircle size={20} />}
-                                        {status === "pending" && <Loader2 className="animate-spin" size={20} />}
-
-                                        <div>
-                                            <p className="uppercase tracking-wider">
-                                                {status === "success" ? t('status_success') :
-                                                 status === "error" ? t('status_error') :
-                                                 t('status_pending')}
-                                            </p>
-                                            {status === "success" && txHash && (
-                                                <a
-                                                    href={`https://explorer.solana.com/tx/${txHash}${network === 'mainnet-beta' ? '' : `?cluster=${network}`}`}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="underline opacity-70 hover:opacity-100 mt-1 block uppercase tracking-tighter"
-                                                >
-                                                    {t('web3_view_explorer')}
-                                                </a>
-                                            )}
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-            </GlassCard>
-
-            {/* Token Inspector Card */}
-            <GlassCard className="p-8 border-white/5 bg-dark-gray/40">
-                <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-xl font-bold uppercase tracking-tight flex items-center gap-2">
-                        <Search size={18} className="text-primary" />
+          {/* Side Tile: Token Inspector */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.1 }}
+            className="lg:col-span-4"
+          >
+            <GlassCard className="h-full p-8 border-white/5 bg-dark-gray/20 flex flex-col">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+                    <h3 className="text-sm font-black uppercase tracking-[0.2em] flex items-center gap-2">
+                        <Search size={16} className="text-primary" />
                         {t('token_inspector_title')}
                     </h3>
+                    <div className="text-[10px] font-mono text-gray-600">v1.0.4</div>
                 </div>
 
-                <div className="flex gap-3 mb-6">
+                <div className="flex flex-col gap-4 mb-8">
+                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Target Mint Address</p>
                     <input
                         type="text"
-                        placeholder={t('token_address_label')}
-                        className="flex-1 bg-darker-gray/50 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-primary/50 transition-all text-xs font-bold"
+                        placeholder="Paste Solana Mint..."
+                        className="terminal-input w-full"
                         value={tokenAddress}
                         onChange={(e) => setTokenAddress(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && inspectToken()}
@@ -288,54 +208,152 @@ export default function Hero() {
                     <Button
                         onClick={inspectToken}
                         disabled={tokenLoading || !tokenAddress}
-                        className="px-6 h-12 uppercase tracking-widest text-[10px]"
+                        className="w-full h-12 !rounded-none !bg-white/5 hover:!bg-primary hover:!text-black border border-white/10 transition-all uppercase tracking-widest text-[10px] font-black"
                     >
-                        {tokenLoading ? <Loader2 className="animate-spin" size={16} /> : t('token_inspect_button')}
+                        {tokenLoading ? <Loader2 className="animate-spin mx-auto" size={16} /> : t('token_inspect_button')}
                     </Button>
                 </div>
 
-                <AnimatePresence mode="wait">
-                    {tokenError && (
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.98 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-[10px] font-bold uppercase"
-                        >
-                            {tokenError}
-                        </motion.div>
+                <div className="flex-1">
+                  <AnimatePresence mode="wait">
+                      {tokenError && (
+                          <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="p-4 bg-red-500/5 border border-red-500/20 text-red-400 text-[10px] font-mono leading-relaxed"
+                          >
+                              [ERROR]: {tokenError}
+                          </motion.div>
+                      )}
+
+                      {tokenData ? (
+                          <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="space-y-4"
+                          >
+                              <div className="space-y-2">
+                                <div className="flex justify-between text-[10px] uppercase tracking-widest">
+                                  <span className="text-gray-500">Supply</span>
+                                  <span className="text-white font-black">{tokenData.supply}</span>
+                                </div>
+                                <div className="w-full h-1 bg-white/5">
+                                  <div className="h-full bg-primary w-2/3 shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-4 pt-4">
+                                  <div className="bg-black/40 p-3 border border-white/5">
+                                      <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-1">Status</p>
+                                      <div className="flex items-center gap-1">
+                                          {!tokenData.mintAuthority ? (
+                                              <CheckCircle2 size={10} className="text-primary" />
+                                          ) : (
+                                              <AlertCircle size={10} className="text-amber-500" />
+                                          )}
+                                          <span className={`text-[9px] font-black uppercase ${!tokenData.mintAuthority ? 'text-primary' : 'text-amber-500'}`}>
+                                              {!tokenData.mintAuthority ? 'VERIFIED' : 'RISKY'}
+                                          </span>
+                                      </div>
+                                  </div>
+                                  <div className="bg-black/40 p-3 border border-white/5">
+                                      <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-1">Authority</p>
+                                      <p className="text-[9px] font-black text-white truncate">
+                                        {tokenData.mintAuthority ? 'Enabled' : 'Revoked'}
+                                      </p>
+                                  </div>
+                              </div>
+                          </motion.div>
+                      ) : !tokenLoading && (
+                        <div className="h-full flex flex-col items-center justify-center border border-dashed border-white/10 opacity-30">
+                          <Cpu size={32} />
+                          <p className="text-[8px] font-black uppercase mt-2 tracking-[0.2em]">Awaiting Data</p>
+                        </div>
+                      )}
+                  </AnimatePresence>
+                </div>
+            </GlassCard>
+          </motion.div>
+
+          {/* Bottom Tile: Solana Support */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="lg:col-span-4"
+          >
+            <GlassCard className="p-8 border-white/5 bg-dark-gray/20">
+                <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                        <div className={`status-dot ${mounted && publicKey ? 'status-dot-active' : 'bg-red-500'}`} />
+                        <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                            {mounted && publicKey ? 'Node Connected' : 'Wallet Detached'}
+                        </span>
+                    </div>
+                    <Wallet className="text-primary/30" size={20} />
+                </div>
+
+                <div className="space-y-6">
+                    {mounted ? (
+                        <WalletMultiButton className="!bg-primary/10 !w-full !justify-center !rounded-none !border !border-primary/50 !font-black hover:!bg-primary hover:!text-black transition-all !h-12 !text-primary !uppercase !tracking-widest !text-[10px]" />
+                    ) : (
+                        <div className="h-12 w-full bg-white/5 animate-pulse" />
                     )}
 
-                    {tokenData && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="space-y-4"
-                        >
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-darker-gray/50 rounded-xl p-4 border border-white/5">
-                                    <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_supply')}</p>
-                                    <p className="text-xs font-black text-white truncate">{tokenData.supply}</p>
-                                </div>
-                                <div className="bg-darker-gray/50 rounded-xl p-4 border border-white/5">
-                                    <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_security')}</p>
-                                    <div className="flex items-center gap-1">
-                                        {!tokenData.mintAuthority ? (
-                                            <CheckCircle2 size={12} className="text-primary" />
-                                        ) : (
-                                            <AlertCircle size={12} className="text-amber-500" />
-                                        )}
-                                        <span className={`text-[8px] font-black uppercase ${!tokenData.mintAuthority ? 'text-primary' : 'text-amber-500'}`}>
-                                            {!tokenData.mintAuthority ? 'Safe' : 'Risky'}
-                                        </span>
-                                    </div>
-                                </div>
+                    {mounted && publicKey && (
+                        <div className="space-y-4 pt-4 border-t border-white/5">
+                            <div className="relative">
+                                <input
+                                    type="number"
+                                    value={amount}
+                                    onChange={(e) => setAmount(e.target.value)}
+                                    className="terminal-input w-full !pr-12"
+                                    placeholder="Amount..."
+                                />
+                                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-primary font-black text-[10px]">SOL</span>
                             </div>
-                        </motion.div>
+
+                            <Button
+                                className="w-full !rounded-none h-12 !bg-primary !text-black uppercase tracking-widest text-[10px] font-black"
+                                disabled={status === "pending" || !amount}
+                                onClick={handleSend}
+                            >
+                                {status === "pending" ? <Loader2 className="animate-spin mx-auto" size={16} /> : 'Execute Support'}
+                            </Button>
+                        </div>
                     )}
-                </AnimatePresence>
+                </div>
             </GlassCard>
-        </motion.div>
+          </motion.div>
+
+          {/* Bottom Tile: Decorative Data/Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="lg:col-span-8"
+          >
+            <GlassCard className="p-8 border-white/5 bg-dark-gray/20 flex items-center justify-between relative overflow-hidden">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full relative z-10">
+                  {[
+                    { label: 'Blockchain', value: 'Solana/EVM' },
+                    { label: 'Ecosystem', value: 'Web3 & SAP' },
+                    { label: 'Status', value: 'Online' },
+                    { label: 'Location', value: 'Remote' }
+                  ].map((stat, i) => (
+                    <div key={i} className="space-y-1">
+                      <p className="text-[8px] font-black text-gray-500 uppercase tracking-[0.3em]">{stat.label}</p>
+                      <p className="text-sm font-black text-white uppercase tracking-wider">{stat.value}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-primary/5 to-transparent flex items-center justify-center">
+                  <Cpu size={40} className="text-primary/20 animate-pulse" />
+                </div>
+            </GlassCard>
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );

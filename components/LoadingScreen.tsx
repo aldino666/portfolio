@@ -6,51 +6,80 @@ import Image from "next/image";
 
 export default function LoadingScreen() {
   const [loading, setLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000);
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setTimeout(() => setLoading(false), 500);
+          return 100;
+        }
+        return prev + Math.random() * 15;
+      });
+    }, 150);
+    return () => clearInterval(interval);
   }, []);
 
   return (
     <AnimatePresence>
       {loading && (
         <motion.div
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-darker-gray"
+          exit={{ opacity: 0, scale: 1.1 }}
+          transition={{ duration: 0.8, ease: [0.43, 0.13, 0.23, 0.96] }}
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-[#050505]"
         >
+          <div className="absolute inset-0 command-grid opacity-20" />
+          <div className="absolute inset-0 scanline opacity-10" />
+
           <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
+            initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className="flex flex-col items-center"
+            className="flex flex-col items-center relative z-10"
           >
-            <div className="w-32 h-32 relative mb-8">
+            <div className="w-24 h-24 relative mb-12">
                <Image
                 src="/logo.png"
                 alt="Loading"
                 fill
-                className="object-contain animate-pulse"
+                className="object-contain"
+               />
+               <motion.div
+                className="absolute inset-0 border-2 border-primary/20 rounded-full"
+                animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.5, 0.2] }}
+                transition={{ duration: 2, repeat: Infinity }}
                />
             </div>
 
-            <div className="w-64 h-1 bg-white/5 rounded-full overflow-hidden">
-                <motion.div
-                initial={{ x: "-100%" }}
-                animate={{ x: "100%" }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                className="h-full w-1/2 bg-primary shadow-[0_0_15px_rgba(6,182,212,0.5)]"
-                />
+            <div className="w-80 space-y-4">
+                <div className="flex justify-between items-end">
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em] text-primary glow-text-cyan">
+                        Boot_Sequence
+                    </span>
+                    <span className="text-[10px] font-mono text-primary/60">
+                        {Math.round(progress)}%
+                    </span>
+                </div>
+                <div className="w-full h-[2px] bg-white/5 relative">
+                    <motion.div
+                        className="h-full bg-primary shadow-[0_0_15px_rgba(6,182,212,0.8)]"
+                        style={{ width: `${progress}%` }}
+                    />
+                </div>
+                <div className="flex justify-between">
+                    <motion.span
+                        animate={{ opacity: [0, 1, 0] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                        className="text-[8px] font-black uppercase tracking-[0.2em] text-gray-700"
+                    >
+                        Fetching Core_Modules...
+                    </motion.span>
+                    <span className="text-[8px] font-black uppercase tracking-[0.2em] text-gray-700">
+                        Aldino_OS v1.0.0
+                    </span>
+                </div>
             </div>
-
-            <motion.span
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-                className="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-gray-500"
-            >
-                Initializing Portfolio
-            </motion.span>
           </motion.div>
         </motion.div>
       )}

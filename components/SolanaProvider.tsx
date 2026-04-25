@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import {
     PhantomWalletAdapter,
@@ -21,10 +21,6 @@ export const SolanaProvider = ({ children }: { children: React.ReactNode }) => {
         return url;
     }, [network]);
 
-    useEffect(() => {
-        console.log(`[SolanaProvider] Active Network: ${network}`);
-        console.log(`[SolanaProvider] Resolved RPC Endpoint: ${endpoint}`);
-    }, [network, endpoint]);
 
     const wallets = useMemo(
         () => [

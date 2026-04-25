@@ -47,35 +47,51 @@ export default function Journey() {
   ];
 
   return (
-    <Section id="journey">
+    <Section id="journey" className="relative overflow-hidden">
+      <div className="absolute top-0 right-0 p-10 opacity-[0.02] -z-10 pointer-events-none">
+        <div className="text-[200px] font-black uppercase leading-none select-none">
+          TIMELINE
+        </div>
+      </div>
+
       <SectionHeading subtitle={t('journey_subtitle')}>
         {t('experience_title')}
       </SectionHeading>
 
-      <div className="relative ml-4 md:ml-12 border-l-4 border-white/5 space-y-16 py-8">
+      <div className="relative space-y-4 max-w-5xl">
+        <div className="absolute left-4 top-0 bottom-0 w-[1px] bg-white/5 md:left-8" />
+
         {milestones.map((item, index) => (
           <motion.div
             key={index}
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: index * 0.1, duration: 0.5 }}
-            className="relative pl-12 group"
+            transition={{ delay: index * 0.05 }}
+            className="relative pl-12 md:pl-20 group"
           >
-            {/* Timeline Marker */}
-            <div className="absolute left-[-14px] top-0 w-6 h-6 rounded-lg bg-darker-gray border-4 border-white/10 group-hover:border-primary transition-all duration-300 group-hover:rotate-45" />
+            {/* HUD Marker */}
+            <div className="absolute left-2.5 md:left-6.5 top-8 w-3 h-3 bg-darker-gray border border-white/20 group-hover:border-primary group-hover:bg-primary transition-all duration-500 z-10" />
 
-            <GlassCard className="p-8 border-transparent hover:border-primary/20 bg-dark-gray/20">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
-                <h3 className="text-2xl font-black uppercase tracking-tighter text-white group-hover:text-primary transition-colors">
-                  {item.title}
-                </h3>
-                <span className="px-4 py-1.5 rounded-lg bg-primary/10 text-primary font-black text-xs uppercase tracking-widest border border-primary/20 whitespace-nowrap">
-                  {item.year}
-                </span>
+            <GlassCard className="p-10 border-white/5 hover:border-primary/20 bg-white/[0.01] transition-all duration-500 group">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-white/5">
+                <div className="space-y-1">
+                  <p className="text-[8px] font-black text-primary uppercase tracking-[0.4em]">
+                    PHASE.0{milestones.length - index}
+                  </p>
+                  <h3 className="text-2xl font-black uppercase tracking-tighter text-white group-hover:text-primary transition-colors glow-text-cyan">
+                    {item.title}
+                  </h3>
+                </div>
+                <div className="flex flex-col items-end">
+                  <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest bg-white/5 px-3 py-1 border border-white/5 group-hover:border-primary/30 group-hover:text-white transition-all">
+                    {item.year}
+                  </span>
+                </div>
               </div>
 
-              <p className="text-gray-400 font-medium text-lg leading-relaxed max-w-4xl group-hover:text-gray-300 transition-colors">
+              <p className="text-gray-500 font-mono text-xs uppercase leading-relaxed max-w-3xl group-hover:text-gray-300 transition-colors">
+                <span className="text-primary/40 mr-2">&gt;</span>
                 {item.desc}
               </p>
             </GlassCard>
