@@ -17,10 +17,8 @@ export const SolanaProvider = ({ children }: { children: React.ReactNode }) => {
     const { network } = useSolanaNetwork();
 
     const endpoint = useMemo(() => {
-        const url = getRpcEndpoint(network);
-        return url;
+        return getRpcEndpoint(network);
     }, [network]);
-
 
     const wallets = useMemo(
         () => [
