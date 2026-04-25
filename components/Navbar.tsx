@@ -8,13 +8,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { Globe, Menu, X, ChevronDown, Cpu } from "lucide-react";
 import { useState, useEffect } from "react";
-import { useWallet } from "@solana/wallet-adapter-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 
 export default function Navbar() {
   const { language, setLanguage, t } = useLanguage();
   const { network, setNetwork } = useSolanaNetwork();
-  const { connected } = useWallet(); void connected;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isNetworkDropdownOpen, setIsNetworkDropdownOpen] = useState(false);
@@ -84,11 +81,6 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Wallet Connect */}
-            <div className="wallet-button-container">
-               <WalletMultiButton className="!bg-primary/10 !border !border-primary/50 !text-primary !font-mono !text-xs !uppercase !tracking-widest !rounded-lg !h-10 hover:!bg-primary/20 transition-all" />
-            </div>
-
             {/* RPC Selector */}
             <div className="relative">
               <button

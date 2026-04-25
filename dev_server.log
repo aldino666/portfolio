@@ -1,14 +1,17 @@
 
 > portfolio@0.1.0 dev
-> next dev -p 3000
+> next dev
 
+ ⚠ Port 3000 is in use, trying 3001 instead.
    ▲ Next.js 15.1.4
-   - Local:        http://localhost:3000
-   - Network:      http://192.168.0.2:3000
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.0.2:3001
 
  ✓ Starting...
- ✓ Ready in 6.8s
+ ✓ Ready in 5.2s
  ○ Compiling / ...
- ✓ Compiled / in 68.3s (10377 modules)
+ ✓ Compiled / in 23.2s (10328 modules)
 bigint: Failed to load bindings, pure JS will be used (try npm run rebuild?)
- GET / 200 in 2985ms
+ GET / 200 in 28162ms
+ GET / 200 in 108ms
+ GET / 200 in 147ms
