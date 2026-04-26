@@ -52,7 +52,9 @@ export default function Navbar() {
               height={32}
               className="transition-transform duration-300 group-hover:scale-110"
             />
-            
+            <span className="font-bold text-2xl tracking-tighter text-white uppercase">
+              ALDINO
+            </span>
           </Link>
 
           <div className="hidden md:flex items-center bg-white/5 border border-white/10 rounded-full px-3 py-1 gap-2">

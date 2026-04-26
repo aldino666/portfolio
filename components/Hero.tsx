@@ -30,12 +30,14 @@ interface TokenData {
 export default function Hero() {
     const { t } = useLanguage();
     const { connection } = useConnection();
-    const { network, networkLabel } = useSolanaNetwork(); void network;
+    const { network } = useSolanaNetwork(); void network;
     const { publicKey, sendTransaction } = useWallet();
     const [amount, setAmount] = useState("");
     const [status, setStatus] = useState<"idle" | "pending" | "success" | "error">("idle");
     const [txHash, setTxHash] = useState(""); void txHash;
     const [mounted, setMounted] = useState(false);
+
+    // Suppress unused warning for build
 
     // Token Inspector State
     const [tokenAddress, setTokenAddress] = useState("");
@@ -49,10 +51,6 @@ export default function Hero() {
 
     const inspectToken = async () => {
         if (!tokenAddress) return;
-        if (!connection) {
-            setTokenError(t('connection_not_ready') || "Connection not ready");
-            return;
-        }
 
         setTokenLoading(true);
         setTokenError(null);
@@ -73,12 +71,7 @@ export default function Hero() {
           });
         } catch (err) {
           console.error(err);
-          const errorMsg = err instanceof Error ? err.message : String(err);
-          if (errorMsg.includes('403') || errorMsg.includes('Access forbidden')) {
-            setTokenError(t('rpc_rate_limit') || "RPC rate limit exceeded. Check your endpoint configuration.");
-          } else {
-            setTokenError(t('token_error') || "Failed to fetch token info");
-          }
+          setTokenError(t('token_error'));
         } finally {
           setTokenLoading(false);
         }
@@ -386,8 +379,8 @@ export default function Hero() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full relative z-10">
                   {[
                     { label: 'Blockchain', value: 'Solana/EVM' },
-                    { label: 'Network', value: networkLabel.toUpperCase() },
-                    { label: 'Status', value: mounted && publicKey ? 'Online' : 'Offline' },
+                    { label: 'Ecosystem', value: 'Web3 & SAP' },
+                    { label: 'Status', value: 'Online' },
                     { label: 'Location', value: 'Remote' }
                   ].map((stat, i) => (
                     <div key={i} className="space-y-1">

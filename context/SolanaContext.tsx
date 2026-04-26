@@ -1,30 +1,22 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { getSolanaNetwork } from '@/lib/rpc';
 
 type SolanaNetwork = WalletAdapterNetwork.Mainnet | WalletAdapterNetwork.Devnet | WalletAdapterNetwork.Testnet;
 
 interface SolanaContextType {
     network: SolanaNetwork;
     setNetwork: (network: SolanaNetwork) => void;
-    networkLabel: string;
 }
 
 const SolanaContext = createContext<SolanaContextType | undefined>(undefined);
 
 export function SolanaNetworkProvider({ children }: { children: ReactNode }) {
-    const [network, setNetwork] = useState<SolanaNetwork>(() => getSolanaNetwork());
-
-    const networkLabel = network === WalletAdapterNetwork.Mainnet
-        ? "mainnet"
-        : network === WalletAdapterNetwork.Devnet
-            ? "devnet"
-            : "testnet";
+    const [network, setNetwork] = useState<SolanaNetwork>(WalletAdapterNetwork.Mainnet);
 
     return (
-        <SolanaContext.Provider value={{ network, setNetwork, networkLabel }}>
+        <SolanaContext.Provider value={{ network, setNetwork }}>
             {children}
         </SolanaContext.Provider>
     );
