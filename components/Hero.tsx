@@ -183,6 +183,7 @@ export default function Hero() {
                 </motion.div>
 
                 <h1 className="text-6xl md:text-8xl font-black leading-[0.85] mb-6 uppercase tracking-tighter glow-text-cyan">
+                  <span className="sr-only">Ralskill - </span>
                   <span className="text-white">AL</span>
                   <span className="text-primary">DINO</span>
                 </h1>
