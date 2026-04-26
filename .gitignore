@@ -19,6 +19,7 @@
 /.claude
 # production
 /build
+bun.lock
 
 # misc
 .DS_Store

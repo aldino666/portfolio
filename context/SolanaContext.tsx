@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { getSolanaNetwork } from '@/lib/rpc';
 
