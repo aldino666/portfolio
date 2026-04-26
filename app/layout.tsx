@@ -13,8 +13,12 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio | Web & Web3 & SAP",
-  description: "Modern professional portfolio for a Full Stack Developer, Web3 Engineer, and SAP Specialist.",
+  title: "Ralskill",
+  description: "Aldino professional portfolio for a web3 engineer and SAP consultant",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
