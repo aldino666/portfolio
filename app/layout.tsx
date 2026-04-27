@@ -15,7 +15,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Ralskill | Développeur Freelance Smart Contract Rust, Solana, EVM",
-  description: "Portfolio d'Aldino : Développeur freelance passionné par le Web3, spécialisé en Smart Contracts (Rust, Solana, Solidity, EVM) et Consultant Techno-Fonctionnel SAP. Création d'architectures blockchain sécurisées.",
+  description: "Développeur freelance passionné par le Web3, spécialisé en Smart Contracts (Rust, Solana, Solidity, EVM) et Consultant Techno-Fonctionnel SAP. Création d'architectures blockchain sécurisées.",
   keywords: [
     "cherche developpeur smart contract",
     "developpeur freelance blockchain",
@@ -28,7 +28,11 @@ export const metadata: Metadata = {
     "Ralskill",
     "Aldino",
     "web3 developer freelance",
-    "expert blockchain france"
+    "Infrastructure blockchain ",
+    "oxalix dev",
+    "consultant sap-Erp",
+    "blockchain architect",
+    "blockchain developer"
   ],
   authors: [{ name: "Aldino" }],
   creator: "Aldino",
