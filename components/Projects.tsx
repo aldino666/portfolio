@@ -24,20 +24,28 @@ export default function Projects() {
 
   const allProjects = [
     {
-      title: t('proj_dapp_title'),
-      desc: t('proj_dapp_desc'),
-      tech: ["Solana", "Web3.js", "Liquidity"],
-      icon: <Wallet className="text-primary" />,
-      link: "https://github.com/aldino666/ox-amm-pool",
-      github: "https://github.com/aldino666/ox-amm-pool"
-    },
-    {
       title: t('proj_smart_title'),
       desc: t('proj_smart_desc'),
       tech: ["Rust", "Anchor", "Smart Contract"],
       icon: <Cpu className="text-primary" />,
       link: "https://solscan.io/account/7EmvXDM9hJz3ULKuP9o5qxyfM2M3MT948aJnZnqzKPBG?cluster=devnet#programIdl",
       github: "https://github.com/aldino666/oxalix-smart-contract"
+    },
+    {
+      title: t('proj_chaintip_title'),
+      desc: t('proj_chaintip_desc'),
+      tech: ["ERC-4337", "EVM", "Account Abstraction"],
+      icon: <Wallet className="text-primary" />,
+      link: "https://sepolia.etherscan.io/address/0xd9877CdAABd987b81f0ebB40303FB294B0607897#writeContract",
+      github: "https://github.com/aldino666/EVM-project.git"
+    },
+    {
+      title: t('proj_dapp_title'),
+      desc: t('proj_dapp_desc'),
+      tech: ["Solana", "Web3.js", "Liquidity"],
+      icon: <Wallet className="text-primary" />,
+      link: "https://github.com/aldino666/ox-amm-pool",
+      github: "https://github.com/aldino666/ox-amm-pool"
     },
     {
       title: t('proj_data_title'),
@@ -62,14 +70,6 @@ export default function Projects() {
       icon: <Code2 className="text-primary" />,
       link: "https://github.com/aldino666/oxalix-presales-SDK",
       github: "https://github.com/aldino666/oxalix-presales-SDK"
-    },
-    {
-      title: t('proj_chaintip_title'),
-      desc: t('proj_chaintip_desc'),
-      tech: ["ERC-4337", "EVM", "Account Abstraction"],
-      icon: <Wallet className="text-primary" />,
-      link: "https://sepolia.etherscan.io/address/0xd9877CdAABd987b81f0ebB40303FB294B0607897#writeContract",
-      github: "https://github.com/aldino666/EVM-project.git"
     },
     {
       title: t('proj_fiori_title'),
