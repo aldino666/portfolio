@@ -23,6 +23,7 @@ export default function Contact() {
 
   const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || "";
   const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || "";
+  const responseTemplateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_RESPONSE_ID || "";
   const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || "";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -39,12 +40,35 @@ export default function Contact() {
     setLoading(true);
 
     try {
+      // 1. Send the initial message to the owner
       await emailjs.sendForm(
         serviceId,
         templateId,
         formRef.current!,
         publicKey
       );
+
+      // 2. Send the automated response to the visitor
+      if (responseTemplateId) {
+        try {
+          await emailjs.send(
+            serviceId,
+            responseTemplateId,
+            {
+              name: formData.name,
+              email: formData.email,
+              greeting: t('email_response_greeting'),
+              thanks: t('email_response_thanks'),
+              message: t('email_response_message'),
+              crd: t('email_response_crd'),
+            },
+            publicKey
+          );
+        } catch (autoResponseError) {
+          console.error("Auto-response failed:", autoResponseError);
+          // We don't block the success toast if only the auto-response fails
+        }
+      }
 
       toast.success("Message sent successfully!");
       setFormData({ name: "", email: "", message: "" });

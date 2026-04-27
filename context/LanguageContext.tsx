@@ -125,6 +125,10 @@ const translations = {
     tx_success: 'Transaction successful!',
     tx_failed: 'Transaction failed',
     invalid_amount: 'Invalid amount',
+    email_response_greeting: 'Hello,',
+    email_response_thanks: 'Thank you for your message.',
+    email_response_message: 'Thank you for your interest in my profile and projects. I will get back to you very soon with a detailed response.',
+    email_response_crd: 'Best regards,',
   },
   fr: {
     nav_projects: 'Projets',
@@ -240,6 +244,10 @@ const translations = {
     tx_success: 'Transaction réussie !',
     tx_failed: 'Échec de la transaction',
     invalid_amount: 'Montant invalide',
+    email_response_greeting: 'Bonjour,',
+    email_response_thanks: 'Merci pour votre message.',
+    email_response_message: 'Je vous remercie pour votre intérêt concernant mon profil et mes projets. Je reviens vers vous très prochainement avec une réponse détaillée.',
+    email_response_crd: 'Cordialement,',
   }
 };
 
