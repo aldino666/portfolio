@@ -6,6 +6,7 @@ import { LanguageProvider } from "@/context/LanguageContext";
 import { SolanaNetworkProvider } from "@/context/SolanaContext";
 import { SolanaProvider } from "@/components/SolanaProvider";
 import { ToastContainer } from "react-toastify";
+import { Analytics } from "@vercel/analytics/next";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -13,23 +14,21 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ralskill | Smart Contract & Web3 Engineer",
-  description: "Aldino's professional portfolio: Expert Web3 Engineer specializing in Smart Contracts (Solidity, Rust, Anchor) and SAP Techno-Functional Consultant. Building robust blockchain architectures.",
+  title: "Ralskill | Développeur Freelance Smart Contract Rust, Solana, EVM",
+  description: "Portfolio d'Aldino : Développeur freelance passionné par le Web3, spécialisé en Smart Contracts (Rust, Solana, Solidity, EVM) et Consultant Techno-Fonctionnel SAP. Création d'architectures blockchain sécurisées.",
   keywords: [
-    "Smart Contract",
-    "Web3 Engineer",
-    "Blockchain Developer",
-    "Solana",
-    "Ethereum",
-    "EVM",
-    "Anchor",
-    "Rust",
-    "Solidity",
-    "Hardhat",
-    "Blockchain Architecture",
-    "SAP Techno-Functional",
+    "cherche developpeur smart contract",
+    "developpeur freelance blockchain",
+    "rust developer",
+    "solana developer",
+    "evm smart contract",
+    "solidity freelance",
+    "anchor rust",
+    "SAP techno-functional",
     "Ralskill",
-    "Aldino"
+    "Aldino",
+    "web3 developer freelance",
+    "expert blockchain france"
   ],
   authors: [{ name: "Aldino" }],
   creator: "Aldino",
@@ -43,8 +42,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "Ralskill | Smart Contract & Web3 Engineer",
-    description: "Expert Web3 Engineer specializing in Smart Contracts and SAP Techno-Functional Consultant.",
+    title: "Ralskill | Développeur Freelance Smart Contract Rust, Solana, EVM",
+    description: "Développeur freelance passionné par les Smart Contracts et Consultant Techno-Fonctionnel SAP.",
     url: "https://ralskill.oxalix.io",
     siteName: "Ralskill Portfolio",
     images: [
@@ -60,8 +59,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ralskill | Smart Contract & Web3 Engineer",
-    description: "Expert Web3 Engineer specializing in Smart Contracts and SAP Techno-Functional Consultant.",
+    title: "Ralskill | Développeur Freelance Smart Contract Rust, Solana, EVM",
+    description: "Développeur freelance passionné par les Smart Contracts et Consultant Techno-Fonctionnel SAP.",
     images: ["/logo.png"],
   },
   icons: {
@@ -93,6 +92,7 @@ export default function RootLayout({
           <SolanaNetworkProvider>
             <SolanaProvider>
               {children}
+              <Analytics />
               <ToastContainer position="bottom-right" theme="dark" />
             </SolanaProvider>
           </SolanaNetworkProvider>
