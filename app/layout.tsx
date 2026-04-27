@@ -14,8 +14,8 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ralskill | Développeur Freelance Smart Contract Rust, Solana, EVM",
-  description: "Développeur freelance passionné par le Web3, spécialisé en Smart Contracts (Rust, Solana, Solidity, EVM) et Consultant Techno-Fonctionnel SAP. Création d'architectures blockchain sécurisées.",
+  title: "Ralskill — Freelance Smart Contract Developer | Solana & EVM",
+  description: "Freelance Web3 developer specialized in Solana smart contracts (Rust/Anchor), Ethereum (Solidity/Hardhat) and SAP. Available for remote projects.",
   keywords: [
     "cherche developpeur smart contract",
     "developpeur freelance blockchain",
@@ -39,15 +39,15 @@ export const metadata: Metadata = {
   publisher: "Aldino",
   metadataBase: new URL("https://ralskill.oxalix.io"),
   alternates: {
-    canonical: "/",
+    canonical: "https://ralskill.oxalix.io/",
     languages: {
       "en-US": "/en",
       "fr-FR": "/fr",
     },
   },
   openGraph: {
-    title: "Ralskill | Développeur Freelance Smart Contract Rust, Solana, EVM",
-    description: "Développeur freelance passionné par les Smart Contracts et Consultant Techno-Fonctionnel SAP.",
+    title: "Ralskill — Freelance Smart Contract Developer | Solana & EVM",
+    description: "Freelance Web3 developer specialized in Solana smart contracts (Rust/Anchor), Ethereum (Solidity/Hardhat) and SAP. Available for remote projects.",
     url: "https://ralskill.oxalix.io",
     siteName: "Ralskill Portfolio",
     images: [
@@ -63,8 +63,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ralskill | Développeur Freelance Smart Contract Rust, Solana, EVM",
-    description: "Développeur freelance passionné par les Smart Contracts et Consultant Techno-Fonctionnel SAP.",
+    title: "Ralskill — Freelance Smart Contract Developer | Solana & EVM",
+    description: "Freelance Web3 developer specialized in Solana smart contracts (Rust/Anchor), Ethereum (Solidity/Hardhat) and SAP. Available for remote projects.",
     images: ["/logo.png"],
   },
   icons: {
@@ -95,6 +95,19 @@ export default function RootLayout({
         <LanguageProvider>
           <SolanaNetworkProvider>
             <SolanaProvider>
+              <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                  __html: JSON.stringify({
+                    "@context": "https://schema.org",
+                    "@type": "Person",
+                    "name": "Aldino",
+                    "jobTitle": "Freelance Smart Contract Developer",
+                    "url": "https://ralskill.oxalix.io",
+                    "knowsAbout": ["Solana", "Rust", "Solidity", "Web3"]
+                  })
+                }}
+              />
               {children}
               <Analytics />
               <ToastContainer position="bottom-right" theme="dark" />
