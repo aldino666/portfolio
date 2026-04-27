@@ -13,7 +13,7 @@ import {
 } from "@solana/web3.js";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, GlassCard } from "./UI";
-import { Github, Linkedin, Wallet, CheckCircle2, AlertCircle, Loader2, ArrowRight, Search, Terminal, Cpu } from "lucide-react";
+import { Github, Linkedin, Wallet, Loader2, ArrowRight, Search, Terminal, Cpu, Download, Info } from "lucide-react";
 import { getMint } from "@solana/spl-token";
 import { toast } from "react-toastify";
 
@@ -21,14 +21,20 @@ const RECEIVER_WALLET = "5qsHwA8wzwXmv6fQoM1TB23hdr6wqf4kDE5B4JjttoYq";
 
 interface TokenData {
   address: string;
+  name: string;
+  symbol: string;
   supply: string;
   decimals: number;
   mintAuthority: string | null;
   freezeAuthority: string | null;
+  updateAuthority: string | null;
+  holders: string | null;
+  volume24h: string | null;
+  isToken2022: boolean;
 }
 
 export default function Hero() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const { connection } = useConnection();
     const { network, networkLabel } = useSolanaNetwork(); void network;
     const { publicKey, sendTransaction } = useWallet();
@@ -60,16 +66,75 @@ export default function Hero() {
 
         try {
           const mintPubkey = new PublicKey(tokenAddress);
-          const mintInfo = await getMint(connection, mintPubkey);
+
+          // 1. Try fetching Mint Info (Check both Token and Token-2022)
+          let mintInfo;
+          let isToken2022 = false;
+          const TOKEN_PROGRAM_ID = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+          const TOKEN_2022_PROGRAM_ID = new PublicKey("TokenzQdBNbAtY9zP9YRqcJCr3GQ9nSbd21ixv9N2L");
+
+          try {
+            mintInfo = await getMint(connection, mintPubkey, "confirmed", TOKEN_PROGRAM_ID);
+          } catch {
+            mintInfo = await getMint(connection, mintPubkey, "confirmed", TOKEN_2022_PROGRAM_ID);
+            isToken2022 = true;
+          }
+
+          // 2. Fetch Metadata (Metaplex)
+          let name = "Unknown Token";
+          let symbol = "???";
+          let updateAuthority = null;
+
+          try {
+            const METADATA_PROGRAM_ID = new PublicKey("metaqbxxUf397E1iXCTMBza4d86X5zg6mHwoSbwS297");
+            const [metadataPDA] = PublicKey.findProgramAddressSync(
+              [Buffer.from("metadata"), METADATA_PROGRAM_ID.toBuffer(), mintPubkey.toBuffer()],
+              METADATA_PROGRAM_ID
+            );
+            const accountInfo = await connection.getAccountInfo(metadataPDA);
+            if (accountInfo) {
+               // Very basic parsing of Metaplex metadata layout
+               updateAuthority = new PublicKey(accountInfo.data.slice(1, 33)).toBase58();
+               // Name starts at offset 65 for Token Metadata V1
+               const nameStart = 65;
+               const nameLen = 32;
+               name = accountInfo.data.slice(nameStart, nameStart + nameLen).toString().replace(/\0/g, '').trim();
+               symbol = accountInfo.data.slice(97, 97 + 10).toString().replace(/\0/g, '').trim();
+            }
+          } catch (e) {
+            console.warn("Metaplex metadata fetch failed", e);
+          }
+
+          // 3. Fetch Market Data from DexScreener
+          let volume24h = "N/A";
+          const holders = "N/A";
+          try {
+            const dexRes = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${tokenAddress}`);
+            const dexData = await dexRes.json();
+            if (dexData.pairs && dexData.pairs.length > 0) {
+              const pair = dexData.pairs[0];
+              volume24h = `$${Number(pair.volume.h24).toLocaleString()}`;
+              if (name === "Unknown Token") name = pair.baseToken.name;
+              if (symbol === "???") symbol = pair.baseToken.symbol;
+            }
+          } catch (e) {
+            console.warn("DexScreener fetch failed", e);
+          }
 
           const supply = (Number(mintInfo.supply) / Math.pow(10, mintInfo.decimals)).toLocaleString();
 
           setTokenData({
             address: mintPubkey.toBase58(),
+            name,
+            symbol,
             supply,
             decimals: mintInfo.decimals,
             mintAuthority: mintInfo.mintAuthority ? mintInfo.mintAuthority.toBase58() : null,
             freezeAuthority: mintInfo.freezeAuthority ? mintInfo.freezeAuthority.toBase58() : null,
+            updateAuthority,
+            holders,
+            volume24h,
+            isToken2022
           });
         } catch (err) {
           console.error(err);
@@ -282,35 +347,41 @@ export default function Hero() {
                               animate={{ opacity: 1, y: 0 }}
                               className="space-y-4"
                           >
-                              <div className="space-y-2">
-                                <div className="flex justify-between text-[10px] uppercase tracking-widest">
-                                  <span className="text-gray-500">Supply</span>
-                                  <span className="text-white font-black">{tokenData.supply}</span>
+                              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                                <div className="space-y-1">
+                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_name')}</p>
+                                  <p className="text-[10px] font-black text-white truncate">{tokenData.name}</p>
                                 </div>
-                                <div className="w-full h-1 bg-white/5">
-                                  <div className="h-full bg-primary w-2/3 shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
+                                <div className="space-y-1">
+                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">Symbol</p>
+                                  <p className="text-[10px] font-black text-primary">{tokenData.symbol}</p>
+                                </div>
+                                <div className="space-y-1 col-span-2">
+                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_supply')}</p>
+                                  <p className="text-[10px] font-black text-white truncate">{tokenData.supply}</p>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_volume_24h')}</p>
+                                  <p className="text-[10px] font-black text-primary">{tokenData.volume24h}</p>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">Program</p>
+                                  <p className="text-[9px] font-black text-gray-400">{tokenData.isToken2022 ? 'TOKEN-2022' : 'SPL-TOKEN'}</p>
                                 </div>
                               </div>
 
-                              <div className="grid grid-cols-2 gap-4 pt-4">
-                                  <div className="bg-black/40 p-3 border border-white/5">
-                                      <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-1">Status</p>
-                                      <div className="flex items-center gap-1">
-                                          {!tokenData.mintAuthority ? (
-                                              <CheckCircle2 size={10} className="text-primary" />
-                                          ) : (
-                                              <AlertCircle size={10} className="text-amber-500" />
-                                          )}
-                                          <span className={`text-[9px] font-black uppercase ${!tokenData.mintAuthority ? 'text-primary' : 'text-amber-500'}`}>
-                                              {!tokenData.mintAuthority ? 'VERIFIED' : 'RISKY'}
-                                          </span>
-                                      </div>
+                              <div className="grid grid-cols-2 gap-2 pt-2">
+                                  <div className="bg-black/40 p-2 border border-white/5">
+                                      <p className="text-[7px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_mint_authority')}</p>
+                                      <p className="text-[8px] font-black truncate text-white">{tokenData.mintAuthority || 'Revoked'}</p>
                                   </div>
-                                  <div className="bg-black/40 p-3 border border-white/5">
-                                      <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest mb-1">Authority</p>
-                                      <p className="text-[9px] font-black text-white truncate">
-                                        {tokenData.mintAuthority ? 'Enabled' : 'Revoked'}
-                                      </p>
+                                  <div className="bg-black/40 p-2 border border-white/5">
+                                      <p className="text-[7px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_freeze_authority')}</p>
+                                      <p className="text-[8px] font-black truncate text-white">{tokenData.freezeAuthority || 'Revoked'}</p>
+                                  </div>
+                                  <div className="bg-black/40 p-2 border border-white/5 col-span-2">
+                                      <p className="text-[7px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_update_authority')}</p>
+                                      <p className="text-[8px] font-black truncate text-white">{tokenData.updateAuthority || 'None'}</p>
                                   </div>
                               </div>
                           </motion.div>
@@ -332,7 +403,7 @@ export default function Hero() {
             transition={{ delay: 0.2 }}
             className="lg:col-span-4"
           >
-            <GlassCard className="p-8 border-white/5 bg-dark-gray/20">
+            <GlassCard className="p-8 border-white/5 bg-dark-gray/20 h-full flex flex-col">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                         <div className={`status-dot ${mounted && publicKey ? 'status-dot-active' : 'bg-red-500'}`} />
@@ -343,35 +414,47 @@ export default function Hero() {
                     <Wallet className="text-primary/30" size={20} />
                 </div>
 
-                <div className="space-y-6">
-                    {mounted ? (
-                        <WalletMultiButton className="!bg-primary/10 !w-full !justify-center !rounded-none !border !border-primary/50 !font-black hover:!bg-primary hover:!text-black transition-all !h-12 !text-primary !uppercase !tracking-widest !text-[10px]" />
-                    ) : (
-                        <div className="h-12 w-full bg-white/5 animate-pulse" />
-                    )}
+                <div className="flex-1 space-y-6">
+                    <div className="space-y-3">
+                        <h3 className="text-xs font-black uppercase tracking-[0.2em] flex items-center gap-2">
+                           <Info size={14} className="text-primary" />
+                           {t('web3_support_title')}
+                        </h3>
+                        <p className="text-[10px] font-mono leading-relaxed text-gray-500 uppercase">
+                           {t('web3_support_desc')}
+                        </p>
+                    </div>
 
-                    {mounted && publicKey && (
-                        <div className="space-y-4 pt-4 border-t border-white/5">
-                            <div className="relative">
-                                <input
-                                    type="number"
-                                    value={amount}
-                                    onChange={(e) => setAmount(e.target.value)}
-                                    className="terminal-input w-full !pr-12"
-                                    placeholder="Amount..."
-                                />
-                                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-primary font-black text-[10px]">SOL</span>
+                    <div className="pt-4 border-t border-white/5 space-y-4">
+                        {mounted ? (
+                            <WalletMultiButton />
+                        ) : (
+                            <div className="h-12 w-full bg-white/5 animate-pulse" />
+                        )}
+
+                        {mounted && publicKey && (
+                            <div className="space-y-4">
+                                <div className="relative">
+                                    <input
+                                        type="number"
+                                        value={amount}
+                                        onChange={(e) => setAmount(e.target.value)}
+                                        className="terminal-input w-full !pr-12"
+                                        placeholder="Amount..."
+                                    />
+                                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-primary font-black text-[10px]">SOL</span>
+                                </div>
+
+                                <Button
+                                    className="w-full !rounded-none h-12 !bg-primary !text-black uppercase tracking-widest text-[10px] font-black"
+                                    disabled={status === "pending" || !amount}
+                                    onClick={handleSend}
+                                >
+                                    {status === "pending" ? <Loader2 className="animate-spin mx-auto" size={16} /> : 'Execute Support'}
+                                </Button>
                             </div>
-
-                            <Button
-                                className="w-full !rounded-none h-12 !bg-primary !text-black uppercase tracking-widest text-[10px] font-black"
-                                disabled={status === "pending" || !amount}
-                                onClick={handleSend}
-                            >
-                                {status === "pending" ? <Loader2 className="animate-spin mx-auto" size={16} /> : 'Execute Support'}
-                            </Button>
-                        </div>
-                    )}
+                        )}
+                    </div>
                 </div>
             </GlassCard>
           </motion.div>
@@ -383,7 +466,7 @@ export default function Hero() {
             transition={{ delay: 0.3 }}
             className="lg:col-span-8"
           >
-            <GlassCard className="p-8 border-white/5 bg-dark-gray/20 flex items-center justify-between relative overflow-hidden">
+            <GlassCard className="p-8 border-white/5 bg-dark-gray/20 flex items-center justify-between relative overflow-hidden h-full">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full relative z-10">
                   {[
                     { label: 'Blockchain', value: 'Solana/EVM' },
@@ -404,6 +487,28 @@ export default function Hero() {
           </motion.div>
 
         </div>
+
+        {/* Download CV Button */}
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mt-12 flex justify-center"
+        >
+            <a
+                href={language === 'fr' ? '/fr-cv.pdf' : '/en-cv.pdf'}
+                download
+                className="group relative inline-flex items-center gap-3 px-10 py-4 bg-white/5 border border-white/10 hover:border-primary/50 transition-all duration-500 overflow-hidden"
+            >
+                <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/5 transition-colors" />
+                <div className="absolute bottom-0 left-0 h-[1px] w-0 bg-primary group-hover:w-full transition-all duration-700 shadow-[0_0_10px_rgba(6,182,212,1)]" />
+
+                <Download size={18} className="text-primary group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-black uppercase tracking-[0.3em] text-white group-hover:text-primary transition-colors">
+                    {t('nav_download_cv')}
+                </span>
+            </a>
+        </motion.div>
       </div>
     </section>
   );
