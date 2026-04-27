@@ -32,7 +32,8 @@ export const metadata: Metadata = {
     "oxalix dev",
     "consultant sap-Erp",
     "blockchain architect",
-    "blockchain developer"
+    "blockchain developer",
+    "Ramanantsirahonana Aldino"
   ],
   authors: [{ name: "Aldino" }],
   creator: "Aldino",
