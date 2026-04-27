@@ -18,6 +18,9 @@ import { getMint } from "@solana/spl-token";
 import { toast } from "react-toastify";
 
 const RECEIVER_WALLET = "5qsHwA8wzwXmv6fQoM1TB23hdr6wqf4kDE5B4JjttoYq";
+const TOKEN_PROGRAM_ID_STR = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+const TOKEN_2022_PROGRAM_ID_STR = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";
+const METADATA_PROGRAM_ID_STR = "metaqbxxUf397E1iXCTMBza4d86X5zg6mHwoSbwS297";
 
 interface TokenData {
   address: string;
@@ -54,7 +57,8 @@ export default function Hero() {
     }, []);
 
     const inspectToken = async () => {
-        if (!tokenAddress) return;
+        const trimmedAddress = tokenAddress.trim();
+        if (!trimmedAddress) return;
         if (!connection) {
             setTokenError(t('connection_not_ready') || "Connection not ready");
             return;
@@ -65,19 +69,31 @@ export default function Hero() {
         setTokenData(null);
 
         try {
-          const mintPubkey = new PublicKey(tokenAddress);
+          let mintPubkey: PublicKey;
+          try {
+            mintPubkey = new PublicKey(trimmedAddress);
+          } catch {
+            setTokenError(t('token_error') || "Invalid token address");
+            setTokenLoading(false);
+            return;
+          }
 
           // 1. Try fetching Mint Info (Check both Token and Token-2022)
           let mintInfo;
           let isToken2022 = false;
-          const TOKEN_PROGRAM_ID = new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
-          const TOKEN_2022_PROGRAM_ID = new PublicKey("TokenzQdBNbAtY9zP9YRqcJCr3GQ9nSbd21ixv9N2L");
+          const tokenProgram = new PublicKey(TOKEN_PROGRAM_ID_STR);
+          const token2022Program = new PublicKey(TOKEN_2022_PROGRAM_ID_STR);
 
           try {
-            mintInfo = await getMint(connection, mintPubkey, "confirmed", TOKEN_PROGRAM_ID);
+            mintInfo = await getMint(connection, mintPubkey, "confirmed", tokenProgram);
           } catch {
-            mintInfo = await getMint(connection, mintPubkey, "confirmed", TOKEN_2022_PROGRAM_ID);
-            isToken2022 = true;
+            try {
+                mintInfo = await getMint(connection, mintPubkey, "confirmed", token2022Program);
+                isToken2022 = true;
+            } catch (err) {
+                console.error("Mint fetch failed:", err);
+                throw new Error("Mint not found on any known program");
+            }
           }
 
           // 2. Fetch Metadata (Metaplex)
@@ -86,20 +102,30 @@ export default function Hero() {
           let updateAuthority = null;
 
           try {
-            const METADATA_PROGRAM_ID = new PublicKey("metaqbxxUf397E1iXCTMBza4d86X5zg6mHwoSbwS297");
+            const metadataProgram = new PublicKey(METADATA_PROGRAM_ID_STR);
+            const encoder = new TextEncoder();
             const [metadataPDA] = PublicKey.findProgramAddressSync(
-              [Buffer.from("metadata"), METADATA_PROGRAM_ID.toBuffer(), mintPubkey.toBuffer()],
-              METADATA_PROGRAM_ID
+              [encoder.encode("metadata"), metadataProgram.toBuffer(), mintPubkey.toBuffer()],
+              metadataProgram
             );
             const accountInfo = await connection.getAccountInfo(metadataPDA);
             if (accountInfo) {
+               const data = accountInfo.data;
                // Very basic parsing of Metaplex metadata layout
-               updateAuthority = new PublicKey(accountInfo.data.slice(1, 33)).toBase58();
+               if (data.length >= 33) {
+                 updateAuthority = new PublicKey(data.slice(1, 33)).toBase58();
+               }
+
+               const decoder = new TextDecoder();
                // Name starts at offset 65 for Token Metadata V1
-               const nameStart = 65;
-               const nameLen = 32;
-               name = accountInfo.data.slice(nameStart, nameStart + nameLen).toString().replace(/\0/g, '').trim();
-               symbol = accountInfo.data.slice(97, 97 + 10).toString().replace(/\0/g, '').trim();
+               if (data.length >= 65 + 32) {
+                 const nameStart = 65;
+                 const nameLen = 32;
+                 name = decoder.decode(data.slice(nameStart, nameStart + nameLen)).replace(/\0/g, '').trim();
+               }
+               if (data.length >= 97 + 10) {
+                 symbol = decoder.decode(data.slice(97, 97 + 10)).replace(/\0/g, '').trim();
+               }
             }
           } catch (e) {
             console.warn("Metaplex metadata fetch failed", e);
@@ -109,7 +135,7 @@ export default function Hero() {
           let volume24h = "N/A";
           const holders = "N/A";
           try {
-            const dexRes = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${tokenAddress}`);
+            const dexRes = await fetch(`https://api.dexscreener.com/latest/dex/tokens/${trimmedAddress}`);
             const dexData = await dexRes.json();
             if (dexData.pairs && dexData.pairs.length > 0) {
               const pair = dexData.pairs[0];
@@ -363,6 +389,10 @@ export default function Hero() {
                                 <div className="space-y-1">
                                   <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_volume_24h')}</p>
                                   <p className="text-[10px] font-black text-primary">{tokenData.volume24h}</p>
+                                </div>
+                                <div className="space-y-1">
+                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_holders')}</p>
+                                  <p className="text-[10px] font-black text-white">{tokenData.holders}</p>
                                 </div>
                                 <div className="space-y-1">
                                   <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">Program</p>
