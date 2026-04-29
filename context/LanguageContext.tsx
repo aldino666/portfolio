@@ -100,8 +100,8 @@ const translations = {
     status_pending: 'Transaction Pending...',
     status_success: 'Transaction Successful!',
     status_error: 'Transaction Failed',
-    web3_support_title: 'Solana Support',
-    web3_support_desc: 'This module serves as both a donation gateway and a live demonstration of my Web3 engineering capabilities. By connecting your wallet and executing a transaction, you can directly interact with the Solana blockchain through a secure, custom-built interface that showcases my expertise in wallet integration, smart contract interaction, and real-time on-chain data handling.',
+    web3_support_title: 'Dev Support Donation',
+    web3_support_desc: 'Support my work through Solana donations. This module is a real-world demonstration of my Web3 engineering capabilities, featuring secure wallet integration and real-time on-chain transaction handling.',
     web3_view_explorer: 'View on Explorer',
     web3_connect_prompt: 'Please connect your wallet to interact',
     token_inspector_title: 'Token Inspector',
@@ -221,8 +221,8 @@ const translations = {
     status_pending: 'Transaction en cours...',
     status_success: 'Transaction réussie !',
     status_error: 'Échec de la transaction',
-    web3_support_title: 'Support Solana',
-    web3_support_desc: 'Ce module sert à la fois de passerelle de donation et de démonstration en direct de mes capacités d\'ingénierie Web3. En connectant votre portefeuille et en exécutant une transaction, vous interagissez directement avec la blockchain Solana via une interface sécurisée et personnalisée qui illustre mon expertise en intégration de portefeuilles, interaction avec les contrats intelligents et gestion des données on-chain en temps réel.',
+    web3_support_title: 'Don de Soutien aux Développeurs',
+    web3_support_desc: 'Soutenez mon travail via des donations Solana. Ce module constitue une démonstration concrète de mes compétences en ingénierie Web3, intégrant une connexion sécurisée aux portefeuilles et une gestion des transactions on-chain en temps réel.',
     web3_view_explorer: 'Voir sur l\'Explorer',
     web3_connect_prompt: 'Veuillez connecter votre portefeuille pour interagir',
     token_inspector_title: 'Inspecteur de Jeton',
@@ -258,7 +258,7 @@ const translations = {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useState<Language>('fr');
 
   const t = (key: string) => {
     return (translations[language] as Record<string, string>)[key] || key;

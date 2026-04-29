@@ -13,7 +13,7 @@ import {
 } from "@solana/web3.js";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, GlassCard } from "./UI";
-import { Github, Linkedin, Wallet, Loader2, ArrowRight, Search, Terminal, Cpu, Download, Info } from "lucide-react";
+import { Github, Linkedin, Wallet, Loader2, ArrowRight, Search, Terminal, Cpu, Download, Info, ShieldCheck, ShieldAlert } from "lucide-react";
 import { getMint } from "@solana/spl-token";
 import { toast } from "react-toastify";
 
@@ -244,6 +244,22 @@ export default function Hero() {
         }
     };
 
+  const AuthorityBadge = ({ authority, label }: { authority: string | null, label: string }) => (
+    <div className="bg-black/40 p-2 border border-white/5">
+        <p className="text-[7px] font-black text-gray-500 uppercase tracking-widest mb-1">{label}</p>
+        <div className="flex items-center gap-1.5">
+            {authority ? (
+                <ShieldAlert size={8} className="text-red-500" />
+            ) : (
+                <ShieldCheck size={8} className="text-primary" />
+            )}
+            <p className={`text-[8px] font-black truncate ${authority ? 'text-white' : 'text-primary'}`}>
+                {authority ? (authority.slice(0, 8) + '...') : t('token_status_revoked')}
+            </p>
+        </div>
+    </div>
+  );
+
   return (
     <section className="relative min-h-screen pt-32 pb-20 overflow-hidden command-grid">
       <div className="absolute inset-0 scanline opacity-10" />
@@ -320,7 +336,7 @@ export default function Hero() {
             </GlassCard>
           </motion.div>
 
-          {/* Side Tile: Token Inspector */}
+          {/* Side Tile: Dev Support Donation (Formerly Token Inspector) */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -328,112 +344,6 @@ export default function Hero() {
             className="lg:col-span-4"
           >
             <GlassCard className="h-full p-8 border-white/5 bg-dark-gray/20 flex flex-col">
-                <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
-                    <h3 className="text-sm font-black uppercase tracking-[0.2em] flex items-center gap-2">
-                        <Search size={16} className="text-primary" />
-                        {t('token_inspector_title')}
-                    </h3>
-                    <div className="text-[10px] font-mono text-gray-600">v1.0.4</div>
-                </div>
-
-                <div className="flex flex-col gap-4 mb-8">
-                    <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Target Mint Address</p>
-                    <input
-                        type="text"
-                        placeholder="Paste Solana Mint..."
-                        className="terminal-input w-full"
-                        value={tokenAddress}
-                        onChange={(e) => setTokenAddress(e.target.value)}
-                        onKeyDown={(e) => e.key === 'Enter' && inspectToken()}
-                    />
-                    <Button
-                        onClick={inspectToken}
-                        disabled={tokenLoading || !tokenAddress}
-                        className="w-full h-12 !rounded-none !bg-white/5 hover:!bg-primary hover:!text-black border border-white/10 transition-all uppercase tracking-widest text-[10px] font-black"
-                    >
-                        {tokenLoading ? <Loader2 className="animate-spin mx-auto" size={16} /> : t('token_inspect_button')}
-                    </Button>
-                </div>
-
-                <div className="flex-1">
-                  <AnimatePresence mode="wait">
-                      {tokenError && (
-                          <motion.div
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              className="p-4 bg-red-500/5 border border-red-500/20 text-red-400 text-[10px] font-mono leading-relaxed"
-                          >
-                              [ERROR]: {tokenError}
-                          </motion.div>
-                      )}
-
-                      {tokenData ? (
-                          <motion.div
-                              initial={{ opacity: 0, y: 10 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              className="space-y-4"
-                          >
-                              <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                                <div className="space-y-1">
-                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_name')}</p>
-                                  <p className="text-[10px] font-black text-white truncate">{tokenData.name}</p>
-                                </div>
-                                <div className="space-y-1">
-                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">Symbol</p>
-                                  <p className="text-[10px] font-black text-primary">{tokenData.symbol}</p>
-                                </div>
-                                <div className="space-y-1 col-span-2">
-                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_supply')}</p>
-                                  <p className="text-[10px] font-black text-white truncate">{tokenData.supply}</p>
-                                </div>
-                                <div className="space-y-1">
-                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_volume_24h')}</p>
-                                  <p className="text-[10px] font-black text-primary">{tokenData.volume24h}</p>
-                                </div>
-                                <div className="space-y-1">
-                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">{t('token_holders')}</p>
-                                  <p className="text-[10px] font-black text-white">{tokenData.holders}</p>
-                                </div>
-                                <div className="space-y-1">
-                                  <p className="text-[8px] font-black text-gray-500 uppercase tracking-widest">Program</p>
-                                  <p className="text-[9px] font-black text-gray-400">{tokenData.isToken2022 ? 'TOKEN-2022' : 'SPL-TOKEN'}</p>
-                                </div>
-                              </div>
-
-                              <div className="grid grid-cols-2 gap-2 pt-2">
-                                  <div className="bg-black/40 p-2 border border-white/5">
-                                      <p className="text-[7px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_mint_authority')}</p>
-                                      <p className="text-[8px] font-black truncate text-white">{tokenData.mintAuthority || 'Revoked'}</p>
-                                  </div>
-                                  <div className="bg-black/40 p-2 border border-white/5">
-                                      <p className="text-[7px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_freeze_authority')}</p>
-                                      <p className="text-[8px] font-black truncate text-white">{tokenData.freezeAuthority || 'Revoked'}</p>
-                                  </div>
-                                  <div className="bg-black/40 p-2 border border-white/5 col-span-2">
-                                      <p className="text-[7px] font-black text-gray-500 uppercase tracking-widest mb-1">{t('token_update_authority')}</p>
-                                      <p className="text-[8px] font-black truncate text-white">{tokenData.updateAuthority || 'None'}</p>
-                                  </div>
-                              </div>
-                          </motion.div>
-                      ) : !tokenLoading && (
-                        <div className="h-full flex flex-col items-center justify-center border border-dashed border-white/10 opacity-30">
-                          <Cpu size={32} />
-                          <p className="text-[8px] font-black uppercase mt-2 tracking-[0.2em]">Awaiting Data</p>
-                        </div>
-                      )}
-                  </AnimatePresence>
-                </div>
-            </GlassCard>
-          </motion.div>
-
-          {/* Bottom Tile: Solana Support */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="lg:col-span-4"
-          >
-            <GlassCard className="p-8 border-white/5 bg-dark-gray/20 h-full flex flex-col">
                 <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-3">
                         <div className={`status-dot ${mounted && publicKey ? 'status-dot-active' : 'bg-red-500'}`} />
@@ -489,29 +399,116 @@ export default function Hero() {
             </GlassCard>
           </motion.div>
 
-          {/* Bottom Tile: Decorative Data/Stats */}
+          {/* Bottom Tile: Token Inspector (Integrated into stats) */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="lg:col-span-8"
+            className="lg:col-span-12"
           >
-            <GlassCard className="p-8 border-white/5 bg-dark-gray/20 flex items-center justify-between relative overflow-hidden h-full">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full relative z-10">
-                  {[
-                    { label: 'Blockchain', value: 'Solana/EVM' },
-                    { label: 'Network', value: networkLabel.toUpperCase() },
-                    { label: 'Status', value: mounted && publicKey ? 'Online' : 'Offline' },
-                    { label: 'Location', value: 'Remote' }
-                  ].map((stat, i) => (
-                    <div key={i} className="space-y-1">
-                      <p className="text-[8px] font-black text-gray-500 uppercase tracking-[0.3em]">{stat.label}</p>
-                      <p className="text-sm font-black text-white uppercase tracking-wider">{stat.value}</p>
+            <GlassCard className="p-8 border-white/5 bg-dark-gray/20 relative overflow-hidden">
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8 pb-6 border-b border-white/5">
+                    <div className="flex items-center gap-4">
+                        <div className="p-3 bg-primary/10 border border-primary/20">
+                            <Search size={20} className="text-primary" />
+                        </div>
+                        <div>
+                            <h3 className="text-sm font-black uppercase tracking-[0.2em]">{t('token_inspector_title')}</h3>
+                            <p className="text-[9px] font-mono text-gray-500 uppercase mt-1">v1.1.0 — {networkLabel.toUpperCase()} NODE</p>
+                        </div>
                     </div>
-                  ))}
+
+                    <div className="flex gap-2 w-full md:w-auto">
+                        <input
+                            type="text"
+                            placeholder="Paste Solana Mint Address..."
+                            className="terminal-input flex-1 md:w-80"
+                            value={tokenAddress}
+                            onChange={(e) => setTokenAddress(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && inspectToken()}
+                        />
+                        <Button
+                            onClick={inspectToken}
+                            disabled={tokenLoading || !tokenAddress}
+                            className="!rounded-none !bg-white/5 hover:!bg-primary hover:!text-black border border-white/10 transition-all font-black"
+                        >
+                            {tokenLoading ? <Loader2 className="animate-spin" size={18} /> : <ArrowRight size={18} />}
+                        </Button>
+                    </div>
                 </div>
-                <div className="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-primary/5 to-transparent flex items-center justify-center">
-                  <Cpu size={40} className="text-primary/20 animate-pulse" />
+
+                <div className="relative z-10 min-h-[120px]">
+                  <AnimatePresence mode="wait">
+                    {tokenError ? (
+                        <motion.div
+                            key="error"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="flex items-center gap-3 p-4 bg-red-500/5 border border-red-500/20 text-red-400 text-[10px] font-mono"
+                        >
+                            <ShieldAlert size={16} />
+                            [SYSTEM ERROR]: {tokenError}
+                        </motion.div>
+                    ) : tokenData ? (
+                        <motion.div
+                            key="data"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0 }}
+                            className="space-y-8"
+                        >
+                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-6">
+                                {[
+                                    { label: t('token_name'), value: tokenData.name, primary: true },
+                                    { label: 'Symbol', value: tokenData.symbol, primary: true },
+                                    { label: t('token_supply'), value: tokenData.supply },
+                                    { label: t('token_volume_24h'), value: tokenData.volume24h, primary: true },
+                                    { label: t('token_holders'), value: tokenData.holders },
+                                    { label: 'Decimals', value: tokenData.decimals },
+                                    { label: 'Program', value: tokenData.isToken2022 ? 'TOKEN-2022' : 'SPL-TOKEN' }
+                                ].map((stat, i) => (
+                                    <div key={i} className="space-y-1">
+                                        <p className="text-[8px] font-black text-gray-500 uppercase tracking-[0.2em]">{stat.label}</p>
+                                        <p className={`text-sm font-black truncate ${stat.primary ? 'text-primary' : 'text-white'}`}>
+                                            {stat.value || 'N/A'}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <AuthorityBadge label={t('token_mint_authority')} authority={tokenData.mintAuthority} />
+                                <AuthorityBadge label={t('token_freeze_authority')} authority={tokenData.freezeAuthority} />
+                                <AuthorityBadge label={t('token_update_authority')} authority={tokenData.updateAuthority} />
+                            </div>
+                        </motion.div>
+                    ) : (
+                        <motion.div
+                            key="placeholder"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full"
+                        >
+                          {[
+                            { label: 'Blockchain', value: 'Solana/EVM' },
+                            { label: 'Network', value: networkLabel.toUpperCase() },
+                            { label: 'Status', value: mounted && publicKey ? 'Online' : 'Offline' },
+                            { label: 'Location', value: 'Remote' }
+                          ].map((stat, i) => (
+                            <div key={i} className="space-y-1">
+                              <p className="text-[8px] font-black text-gray-500 uppercase tracking-[0.3em]">{stat.label}</p>
+                              <p className="text-sm font-black text-white uppercase tracking-wider">{stat.value}</p>
+                            </div>
+                          ))}
+                        </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
+                <div className="absolute right-0 top-0 h-full w-1/4 bg-gradient-to-l from-primary/5 to-transparent flex items-center justify-center pointer-events-none">
+                  <Cpu size={60} className="text-primary/10 animate-pulse" />
                 </div>
             </GlassCard>
           </motion.div>
