@@ -123,7 +123,7 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     className="terminal-input w-full"
-                    placeholder="User_ID"
+                    placeholder="Name"
                     required
                   />
                 </div>
@@ -135,7 +135,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     className="terminal-input w-full"
-                    placeholder="Auth_Token"
+                    placeholder="email@example.com"
                     required
                   />
                 </div>
@@ -183,7 +183,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-[8px] font-black text-gray-600 uppercase tracking-widest mb-1">GitHub Endpoint</p>
-                  <p className="text-sm font-black uppercase tracking-wider text-white">0xAlDInO</p>
+                  <p className="text-sm font-black uppercase tracking-wider text-white">github/0xAlDInO</p>
                 </div>
               </GlassCard>
             </a>
@@ -194,7 +194,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-[8px] font-black text-gray-600 uppercase tracking-widest mb-1">LinkedIn Sync</p>
-                  <p className="text-sm font-black uppercase tracking-wider text-white">ramanantsirahonana</p>
+                  <p className="text-sm font-black uppercase tracking-wider text-white">linkedin/ramanantsirahonana</p>
                 </div>
               </GlassCard>
             </a>

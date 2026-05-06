@@ -37,63 +37,63 @@ export default function Projects() {
       tech: ["ERC-4337", "EVM", "Account Abstraction"],
       icon: <Wallet className="text-primary" />,
       link: "https://sepolia.etherscan.io/address/0xd9877CdAABd987b81f0ebB40303FB294B0607897#writeContract",
-      github: "https://github.com/aldino666/EVM-project.git"
+      github: "https://github.com/0xaldino/EVM-project.git"
     },
     {
       title: t('proj_dapp_title'),
       desc: t('proj_dapp_desc'),
       tech: ["Solana", "Web3.js", "Liquidity"],
       icon: <Wallet className="text-primary" />,
-      link: "https://github.com/aldino666/ox-amm-pool",
-      github: "https://github.com/aldino666/ox-amm-pool"
+      link: "https://github.com/0xaldino/ox-amm-pool",
+      github: "https://github.com/0xaldino/ox-amm-pool"
     },
     {
       title: t('proj_data_title'),
       desc: t('proj_data_desc'),
       tech: ["Rust", "Solana", "Data Analysis"],
       icon: <LineChart className="text-primary" />,
-      link: "https://github.com/aldino666/Wallet-Tracking-Solana",
-      github: "https://github.com/aldino666/Wallet-Tracking-Solana"
+      link: "https://github.com/0xaldino/Wallet-Tracking-Solana",
+      github: "https://github.com/0xaldino/Wallet-Tracking-Solana"
     },
     {
       title: t('proj_token_title'),
       desc: t('proj_token_desc'),
       tech: ["Solana", "TypeScript", "Automation"],
       icon: <Code2 className="text-primary" />,
-      link: "https://github.com/aldino666/oxalix-token-creator",
-      github: "https://github.com/aldino666/oxalix-token-creator"
+      link: "https://github.com/0xaldino/oxalix-token-creator",
+      github: "https://github.com/0xaldino/oxalix-token-creator"
     },
     {
       title: t('proj_sdk_title'),
       desc: t('proj_sdk_desc'),
       tech: ["TypeScript", "SDK", "Web3"],
       icon: <Code2 className="text-primary" />,
-      link: "https://github.com/aldino666/oxalix-presales-SDK",
-      github: "https://github.com/aldino666/oxalix-presales-SDK"
+      link: "https://github.com/0xaldino/oxalix-presales-SDK",
+      github: "https://github.com/0xaldino/oxalix-presales-SDK"
     },
     {
       title: t('proj_fiori_title'),
       desc: t('proj_fiori_desc'),
       tech: ["SAP Fiori", "JavaScript", "Enterprise"],
       icon: <Database className="text-primary" />,
-      link: "https://github.com/aldino666/fiori-v1",
-      github: "https://github.com/aldino666/fiori-v1"
+      link: "https://github.com/0xaldino/fiori-v1",
+      github: "https://github.com/0xaldino/fiori-v1"
     },
     {
       title: t('proj_ecommerce_title'),
       desc: t('proj_ecommerce_content'),
       tech: ["Java", "Fullstack", "Database"],
       icon: <ShoppingBag className="text-primary" />,
-      link: "https://github.com/aldino666/E-Commerce-Plateforme",
-      github: "https://github.com/aldino666/E-Commerce-Plateforme"
+      link: "https://github.com/0xaldino/E-Commerce-Plateforme",
+      github: "https://github.com/0xaldino/E-Commerce-Plateforme"
     },
     {
       title: t('proj_webmapping_title'),
       desc: t('proj_webmapping_desc'),
       tech: ["PHP", "GIS", "Data Viz"],
       icon: <MapPin className="text-primary" />,
-      link: "https://github.com/aldino666/neighborhood-analysis-webmapping",
-      github: "https://github.com/aldino666/neighborhood-analysis-webmapping"
+      link: "https://github.com/0xaldino/neighborhood-analysis-webmapping",
+      github: "https://github.com/0xaldino/neighborhood-analysis-webmapping"
     }
   ];
 
