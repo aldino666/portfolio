@@ -29,7 +29,7 @@ export default function Projects() {
       tech: ["Rust", "Anchor", "Smart Contract"],
       icon: <Cpu className="text-primary" />,
       link: "https://solscan.io/account/7EmvXDM9hJz3ULKuP9o5qxyfM2M3MT948aJnZnqzKPBG?cluster=devnet#programIdl",
-      github: "https://github.com/aldino666/oxalix-smart-contract"
+      github: "https://github.com/0xAlDinO/oxalix-smart-contract"
     },
     {
       title: t('proj_chaintip_title'),

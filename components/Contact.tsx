@@ -183,7 +183,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-[8px] font-black text-gray-600 uppercase tracking-widest mb-1">GitHub Endpoint</p>
-                  <p className="text-sm font-black uppercase tracking-wider text-white">aldino666</p>
+                  <p className="text-sm font-black uppercase tracking-wider text-white">0xAlDInO</p>
                 </div>
               </GlassCard>
             </a>
